@@ -236,8 +236,8 @@
   /* ===== Context ===== */
   .context{
     background:var(--mint-bg);
-    padding-top:40px;
-    padding-bottom:40px;
+    padding-top:60px;
+    padding-bottom:60px;
   }
   .context-row{
     display:flex;
@@ -392,6 +392,25 @@
   .dot-wrap.before span{background:var(--pink-dot);}
   .dot-wrap.after span{background:var(--green-dot);}
   .ba-callout p{font-size:18px;color:var(--body);flex:1;}
+  .ba-link{display:block;position:relative;}
+  .ba-overlay{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(0,0,0,0.7);
+    color:#fff;
+    padding:12px 24px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    opacity:0;
+    transition:opacity 0.3s;
+    pointer-events:none;
+  }
+  .ba-link:hover .ba-overlay{opacity:1;}
 
   /* ===== What changed ===== */
   .changed{
@@ -435,13 +454,14 @@
   }
   .changed-tag.yellow{background:var(--yellow-tag);}
   .changed-tag.mint{background:var(--mint-soft);}
-  .changed-title{
-    flex:1 1 260px;
+  .changed-title60px;
+    padding-bottom:6
     font-weight:500;
     font-size:18px;
     color:var(--body-2);
-    max-width:400px;
-  }
+    max-40px;
+    flex-wrap:wrap;
+    margin-bottom:40px
   .changed-desc{
     flex:1 1 260px;
     font-weight:500;
@@ -667,9 +687,12 @@
     <h2>Before → After</h2>
     <div class="ba-row">
       <div class="ba-col">
-        <div class="ba-placeholder">
-          <img class="ba-image" src="English Language Editing Services to Publish in High-Impact Journals _ Wiley.png" alt="Before screenshot of the Wiley English Language Editing services page">
-        </div>
+        <a href="Live version (2).png" target="_blank" rel="noopener" class="ba-link">
+          <div class="ba-placeholder">
+            <img class="ba-image" src="English Language Editing Services to Publish in High-Impact Journals _ Wiley.png" alt="Before screenshot of the Wiley English Language Editing services page">
+            <span class="ba-overlay">View design</span>
+          </div>
+        </a>
         <p class="caption">Before - Already too cluttered - and we're about to add a 4th service, Post-AI Editing.</p>
         <div class="ba-callouts">
           <div class="ba-callout">
@@ -687,9 +710,12 @@
         </div>
       </div>
       <div class="ba-col">
-        <div class="ba-placeholder">
-          <img class="ba-image" src="Desktop (2).png" alt="After screenshot of the redesigned editing services pricing plans">
-        </div>
+        <a href="Live version (2).png" target="_blank" rel="noopener" class="ba-link">
+          <div class="ba-placeholder">
+            <img class="ba-image" src="Desktop (2).png" alt="After screenshot of the redesigned editing services pricing plans">
+            <span class="ba-overlay">View design</span>
+          </div>
+        </a>
         <p class="caption">After - 4 cards, scannable in seconds. Detail is one click away.</p>
         <div class="ba-callouts">
           <div class="ba-callout">
@@ -712,7 +738,7 @@
   <!-- ===== Actual screens ===== -->
   <section class="actual-screens">
     <div class="actual-screens-header">
-      <h2>The actual screen</h2>
+      <h2>Final Design</h2>
       <div class="actual-screens-intro">
       </div>
     </div>
