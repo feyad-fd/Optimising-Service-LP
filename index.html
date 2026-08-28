@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScholarEdit — Redesigning the Editing Services Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#001428;
+    --forest:#1a4a3a;
+    --forest-2:#2d7a5a;
+    --body:#262626;
+    --body-2:#262625;
+    --mint-strong:#82eda6;
+    --mint-soft:#b5ead7;
+    --mint-line:#c4eddf;
+    --mint-row-line:#d8f3ea;
+    --mint-bg:#f7fcfb;
+    --cream:#f8f7ec;
+    --pink-tag:#fccddc;
+    --pink-soft:#ffb3c6;
+    --pink-dot:#ff6b8a;
+    --red-tag:#fe5e5e;
+    --red-card-bg:#fff5f5;
+    --red-card-border:#fcc;
+    --green-card-bg:#ebf9f4;
+    --green-card-border:#94d1b5;
+    --green-dot:#2d9b6f;
+    --gold-border:#e8d090;
+    --yellow-tag:#fff9c4;
+    --old-caption:#3a5a50;
+    --page-bg:#ffffff;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--page-bg);
+    color:var(--body);
+    font-family:'Poppins',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  p{margin:0;}
+
+  .display{
+    font-family:'Cooper Five Opti','Cooper Black',Georgia,serif;
+    font-weight:900;
+  }
+
+  .wrap{
+    max-width:1280px;
+    margin:0 auto;
+  }
+  section, header{
+    padding-left:clamp(20px,7vw,100px);
+    padding-right:clamp(20px,7vw,100px);
+  }
+
+  /* ===== Header ===== */
+  .site-header{
+    background:var(--mint-strong);
+    padding-top:18px;
+    padding-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .logo{
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.16px;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin:0;
+  }
+  .site-nav{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .site-nav li{
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.44px;
+    text-transform:uppercase;
+    color:var(--navy);
+  }
+  .site-nav a,
+  .header-pill{
+    color:inherit;
+    text-decoration:none;
+  }
+  .header-pill{
+    border:1px solid var(--navy);
+    border-radius:999px;
+    padding:6px 11px;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.44px;
+    text-transform:uppercase;
+    color:var(--navy);
+    white-space:nowrap;
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    background:var(--cream);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+  }
+  .hero-tag{
+    display:inline-flex;
+    background:var(--pink-tag);
+    border-radius:100px;
+    padding:8px 16px;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.16px;
+    text-transform:uppercase;
+    color:var(--navy);
+  }
+  .hero-title{
+    color:var(--forest);
+    font-size:clamp(30px,5vw,48px);
+    line-height:1.15;
+    text-transform:uppercase;
+    margin:16px 0 0;
+  }
+  .hero-sub{
+    font-size:18px;
+    line-height:1.5;
+    color:var(--body);
+    max-width:1080px;
+    margin-top:16px;
+  }
+  .hero-sub .light{font-weight:400;}
+  .hero-sub .semib{font-weight:600;}
+
+  .meta-row{
+    border-top:2px solid var(--mint-line);
+    padding-top:32px;
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .meta-item{flex:1 1 200px;display:flex;flex-direction:column;gap:4px;}
+  .meta-item .label{
+    font-weight:700;
+    font-size:14px;
+    text-transform:uppercase;
+    color:var(--body);
+  }
+  .meta-item .value{
+    font-weight:500;
+    font-size:18px;
+    color:var(--body);
+  }
+  .meta-full{margin-top:24px;}
+  .timeline{
+    display:flex;
+    gap:0;
+    list-style:none;
+    margin:8px 0 0;
+    padding:0;
+  }
+  .timeline-step{
+    position:relative;
+    flex:1;
+    padding:36px 24px 0 0;
+    color:var(--body);
+  }
+  .timeline-step:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    top:10px;
+    left:12px;
+    right:0;
+    height:2px;
+    background:var(--mint-line);
+  }
+  .timeline-step::before{
+    content:'';
+    position:absolute;
+    top:3px;
+    left:0;
+    width:16px;
+    height:16px;
+    border:4px solid var(--cream);
+    border-radius:50%;
+    background:var(--red-tag);
+    box-shadow:0 0 0 2px var(--red-tag);
+    z-index:1;
+  }
+  .timeline-date,
+  .timeline-event{display:block;}
+  .timeline-date{
+    color:var(--forest);
+    font-size:14px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+  .timeline-event{
+    margin-top:4px;
+    font-size:16px;
+    font-weight:500;
+  }
+
+  @media (max-width:700px){
+    .timeline{flex-direction:column;gap:20px;padding-left:12px;}
+    .timeline-step{padding:0 0 0 28px;}
+    .timeline-step:not(:last-child)::after{
+      top:14px;
+      left:6px;
+      right:auto;
+      width:2px;
+      height:calc(100% + 20px);
+    }
+    .timeline-step::before{top:3px;left:-6px;}
+  }
+
+  /* ===== Context ===== */
+  .context{
+    background:var(--mint-bg);
+    padding-top:40px;
+    padding-bottom:40px;
+  }
+  .context-row{
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .context-row h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    width:300px;
+    max-width:100%;
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+  }
+  .context-text{flex:1 1 400px;display:flex;flex-direction:column;gap:16px;}
+  .context-text .q{
+    font-weight:600;
+    font-size:20px;
+    line-height:1.6;
+    color:var(--body);
+  }
+  .context-text .a{
+    font-weight:400;
+    font-size:18px;
+    line-height:1.7;
+    color:var(--body);
+  }
+
+  .divider{
+    max-width:1118px;
+    margin:0 auto;
+    border:none;
+    border-top:1px solid var(--mint-row-line);
+  }
+  .divider-wrap{background:var(--mint-bg);padding:0 clamp(20px,7vw,100px);}
+  .divider-wrap.on-cream{background:var(--mint-bg);}
+
+  /* ===== At a glance ===== */
+  .glance{
+    background:var(--mint-bg);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:64px;
+  }
+  .glance-header p.eyebrow{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:800;
+    margin:0 0 4px;
+  }
+  .glance-header p.sub{
+    color:#3a2030;
+    font-size:18px;
+    max-width:720px;
+  }
+  .glance-cards{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .glance-card{
+    flex:1 1 320px;
+    border-radius:20px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .glance-card.problem{
+    background:var(--red-card-bg);
+    border:1px solid var(--red-card-border);
+  }
+  .glance-card.goal{
+    background:var(--green-card-bg);
+    border:1px solid var(--green-card-border);
+  }
+  .glance-tag{
+    display:inline-flex;
+    align-self:flex-start;
+    border-radius:100px;
+    padding:10px 24px;
+    font-weight:800;
+    font-size:14px;
+    text-transform:uppercase;
+  }
+  .glance-tag.problem{background:var(--red-tag);color:#fff;}
+  .glance-tag.goal{background:var(--forest);color:#fff;}
+  .glance-card p.body-text{
+    font-size:18px;
+    line-height:1.6;
+    color:#3a2030;
+  }
+  .glance-card.goal p.body-text{color:var(--body-2);}
+  .glance-card p.body-text strong{color:var(--body);font-weight:400;}
+  .glance-card.problem p.body-text strong{background:var(--red-tag);color:#fff;padding:2px 6px;border-radius:4px;}
+
+  /* ===== Before / After ===== */
+  .before-after{
+    background:#ebf9f4;
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+  .before-after h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+  }
+  .ba-row{
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .ba-col{
+    flex:1 1 420px;
+    max-width:537px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .ba-placeholder{
+    border:1px solid var(--gold-border);
+    border-radius:8px;
+    aspect-ratio:502/353;
+    background:
+      linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%,#eee),
+      linear-gradient(45deg,#eee 25%,#fafafa 25%,#fafafa 75%,#eee 75%,#eee);
+    background-size:24px 24px;
+    background-position:0 0,12px 12px;
+  }
+  .ba-col p.caption{font-size:18px;line-height:1.6;color:var(--body);}
+  .ba-callouts{display:flex;flex-direction:column;gap:12px;}
+  .ba-callout{display:flex;gap:10px;align-items:center;}
+  .dot-wrap{
+    width:20px;height:20px;border-radius:100px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .dot-wrap.before{background:var(--pink-soft);}
+  .dot-wrap.after{background:var(--mint-soft);}
+  .dot-wrap span{width:8px;height:8px;border-radius:4px;display:block;}
+  .dot-wrap.before span{background:var(--pink-dot);}
+  .dot-wrap.after span{background:var(--green-dot);}
+  .ba-callout p{font-size:18px;color:var(--body);flex:1;}
+
+  /* ===== What changed ===== */
+  .changed{
+    background:var(--mint-bg);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+  .changed h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+  }
+  .changed-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    padding:20px 0;
+    border-bottom:2px solid var(--mint-row-line);
+  }
+  .changed-row:last-child{border-bottom:none;}
+  .changed-tag{
+    flex:0 0 150px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:100px;
+    padding:6px 14px;
+    font-weight:600;
+    font-size:18px;
+    text-transform:uppercase;
+    color:var(--forest);
+    text-align:center;
+    white-space:nowrap;
+  }
+  .changed-tag.yellow{background:var(--yellow-tag);}
+  .changed-tag.mint{background:var(--mint-soft);}
+  .changed-title{
+    flex:1 1 260px;
+    font-weight:500;
+    font-size:18px;
+    color:var(--body-2);
+    max-width:400px;
+  }
+  .changed-desc{
+    flex:1 1 260px;
+    font-weight:500;
+    font-size:18px;
+    line-height:1.5;
+    color:var(--body);
+    max-width:360px;
+  }
+
+  /* ===== Actual screens ===== */
+  .actual-screens{
+    background:var(--mint-soft);
+    padding-top:100px;
+    padding-bottom:120px;
+  }
+  .actual-screens-header{
+    display:flex;
+    gap:80px;
+    flex-wrap:wrap;
+  }
+  .actual-screens-header h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    width:300px;
+    max-width:100%;
+    margin:0;
+  }
+  .actual-screens-intro{
+    flex:1 1 400px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .actual-screens-intro p.h3{
+    font-weight:700;
+    color:var(--forest);
+    font-size:16px;
+    line-height:1.6;
+  }
+  .actual-screens-intro p.body-sm{
+    font-weight:400;
+    color:var(--forest-2);
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  /* ===== What's next ===== */
+  .whats-next{
+    background:var(--mint-bg);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:64px;
+  }
+  .whats-next h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+  }
+  .whats-next-body{display:flex;flex-direction:column;gap:24px;}
+  .whats-next-body > p.intro{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--old-caption);
+  }
+  .whats-next-list{display:flex;flex-direction:column;gap:16px;}
+  .wn-item{display:flex;gap:14px;align-items:center;}
+  .num-pill{
+    flex-shrink:0;
+    border-radius:100px;
+    padding:4px 12px;
+    font-weight:800;
+    font-size:14px;
+    color:var(--forest);
+  }
+  .num-pill.green{background:var(--mint-soft);}
+  .num-pill.pink{background:var(--pink-soft);}
+  .wn-item p{
+    font-size:15px;
+    color:var(--forest);
+    flex:1;
+  }
+
+  @media (max-width:640px){
+    .site-nav{order:3;width:100%;justify-content:center;}
+    .hero-title{font-size:32px;}
+    .context-row h2, .actual-screens-header h2{width:100%;}
+    .glance-cards{flex-direction:column;}
+    .changed-row{flex-direction:column;align-items:flex-start;}
+    .changed-tag{align-self:flex-start;}
+  }
+  .ba-placeholder{overflow:hidden;}
+  .ba-image{width:100%;height:100%;object-fit:cover;object-position:top;}
+  :root{--space-1:8px;--space-2:16px;--space-3:24px;--space-4:32px;--space-5:48px;--space-6:64px;}
+  section{padding-top:var(--space-6);padding-bottom:var(--space-6);}
+  section[id]{scroll-margin-top:80px;}
+  .site-header{padding-top:var(--space-2);padding-bottom:var(--space-2);gap:var(--space-2);}
+  .site-nav a{color:inherit;text-decoration:none;}
+  .hero{gap:var(--space-5);}
+  .hero-title{margin-top:var(--space-3);}
+  .hero-sub{margin-top:var(--space-2);}
+  .meta-row{padding-top:var(--space-5);gap:var(--space-4);}
+  .meta-item{gap:var(--space-1);}
+  .meta-full{margin-top:var(--space-3);}
+  .context{padding-top:var(--space-5);padding-bottom:var(--space-5);}
+  .context-row,.actual-screens-header{gap:var(--space-5);}
+  .context-text,.actual-screens-intro{gap:var(--space-2);}
+  .glance{gap:var(--space-5);}
+  .glance-card{padding:var(--space-3);gap:var(--space-3);}
+  .glance-cards{gap:var(--space-4);}
+  .before-after,.whats-next{gap:var(--space-3);}
+  .ba-row{gap:var(--space-5);}
+  .ba-col{gap:var(--space-3);}
+  .ba-callouts{gap:var(--space-2);}
+  .ba-callout{gap:var(--space-2);}
+  .actual-screens{padding-top:var(--space-6);padding-bottom:var(--space-6);}
+  .actual-screens-header{gap:var(--space-6);}
+  .whats-next{gap:var(--space-5);}
+  .whats-next-body{gap:var(--space-3);}
+  .whats-next-list{gap:var(--space-2);}
+  .wn-item{gap:var(--space-2);}
+  @media(max-width:700px){section{padding-top:var(--space-5);padding-bottom:var(--space-5);}.timeline{gap:var(--space-3);}}
+</style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <p class="logo">Product Design Case Study</p>
+    <ul class="site-nav">
+      <li><a href="#brief">Brief</a></li>
+      <li><a href="#diagnosis">Diagnosis</a></li>
+      <li><a href="#revision">Revision</a></li>
+      <li><a href="#reflection">Reflection</a></li>
+    </ul>
+    <a class="header-pill" href="https://www.figma.com/design/ck9DC9QSCnVsZqc7qsY8zC/English-Language-Editing-Page?node-id=0-1&amp;t=Zlw4gX4m2lH0WwHv-1" target="_blank" rel="noreferrer">View Project</a>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="brief">
+    <div>
+      <h1 class="hero-title display">Redesigning<br>the editing services page</h1>
+      <p class="hero-sub">Optimising a service landing page for a global research support and academic publishing services company, introducing Post-AI Editing as a new addition to its existing service portfolio.</p>
+    </div>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="label">Role</span>
+        <span class="value">Product Designer · POC</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Worked with</span>
+        <span class="value">PMs · Marketing · Devs · Stakeholders</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Tools</span>
+        <span class="value">Figma, Microsoft Clarity, Hotjar</span>
+      </div>
+    </div>
+    <div class="meta-item meta-full">
+      <span class="label">Timeline</span>
+      <ol class="timeline" aria-label="Project timeline">
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 11</span>
+          <span class="timeline-event">Research</span>
+        </li>
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 12</span>
+          <span class="timeline-event">First draft - 3 versions</span>
+        </li>
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 18</span>
+          <span class="timeline-event">Final draft</span>
+        </li>
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 19</span>
+          <span class="timeline-event">Development</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== Context ===== -->
+  <section class="context" id="diagnosis">
+    <div class="context-row">
+      <h2>Context</h2>
+      <div class="context-text">
+        <p class="q">What this page does?</p>
+        <p class="a">The company helps researchers polish papers before they submit to journals. This service page is where people pick a service: Standard, Advanced, or Scientific Editing. We're introducing a 4th - Post-AI Editing, or papers drafted with AI tools and rebranding the page with client facing names for services.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-wrap"><hr class="divider"></div>
+
+  <!-- ===== At a glance ===== -->
+  <section class="glance">
+    <div class="glance-header">
+      <p class="eyebrow">At a glance</p>
+      <p class="sub">Two quick summaries of the challenge and the goal.</p>
+    </div>
+    <div class="glance-cards">
+      <div class="glance-card problem">
+        <span class="glance-tag problem">The problem</span>
+        <p class="body-text">Comparing our 3 editing plans already took effort. Post-AI Editing, our 4th service, isn't directly comparable to the others - it doesn't fit the same format. That meant <strong>restructuring</strong> the section, not just adding one more option.</p>
+      </div>
+      <div class="glance-card goal">
+        <span class="glance-tag goal">The goal</span>
+        <p class="body-text">Make all 4 plans easy to scan - in seconds, not minutes.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-wrap"><hr class="divider"></div>
+
+  <!-- ===== Before / After ===== -->
+  <section class="before-after" id="revision">
+    <h2>Before → After</h2>
+    <div class="ba-row">
+      <div class="ba-col">
+        <div class="ba-placeholder">
+          <img class="ba-image" src="English Language Editing Services to Publish in High-Impact Journals _ Wiley.png" alt="Before screenshot of the Wiley English Language Editing services page">
+        </div>
+        <p class="caption">Before - Already too cluttered - and we're about to add a 4th service, Post-AI Editing.</p>
+        <div class="ba-callouts">
+          <div class="ba-callout">
+            <span class="dot-wrap before"><span></span></span>
+            <p>Dense text - hard to scan, No room for a 4th plan</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap before"><span></span></span>
+            <p>Pricing not shown upfront</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap before"><span></span></span>
+            <p>Hero banner consuming 30% of top fold</p>
+          </div>
+        </div>
+      </div>
+      <div class="ba-col">
+        <div class="ba-placeholder">
+          <img class="ba-image" src="Desktop (2).png" alt="After screenshot of the redesigned editing services pricing plans">
+        </div>
+        <p class="caption">After - 4 cards, scannable in seconds. Detail is one click away.</p>
+        <div class="ba-callouts">
+          <div class="ba-callout">
+            <span class="dot-wrap after"><span></span></span>
+            <p>4 cards, scannable in seconds</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap after"><span></span></span>
+            <p>Pricing for each service shown upfront reducing one click</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap after"><span></span></span>
+            <p>High impact hero banner optimising top fold</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Actual screens ===== -->
+  <section class="actual-screens">
+    <div class="actual-screens-header">
+      <h2>The actual screen</h2>
+      <div class="actual-screens-intro">
+      </div>
+    </div>
+    <img class="actual-screen-image" src="Desktop (3).png" alt="Final ScholarEdit editing services screen" style="border-radius:16px;">
+  </section>
+
+  <!-- ===== What's next ===== -->
+  <section class="whats-next" id="reflection">
+    <h2>What's next</h2>
+    <div class="whats-next-body">
+      <p class="intro">This isn't live yet. Here's what I'll check once it is.</p>
+      <div class="whats-next-list">
+        <div class="wn-item">
+          <span class="num-pill green">01</span>
+          <p>Are people scrolling back up to the navigation and clicking on pricing nav item.</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill pink">02</span>
+          <p>Does the sticky bar cut down on scrolling back up?</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill green">03</span>
+          <p>Has the drop off rate reduced?</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill pink">04</span>
+          <p>Does 'Scientific Editing' read clearer than 'Premium' did?</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill green">05</span>
+          <p>Do 'which plan do I need' support tickets go down?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
