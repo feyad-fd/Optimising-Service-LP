@@ -277,6 +277,26 @@
   .divider-wrap{background:var(--mint-bg);padding:0 clamp(20px,7vw,100px);}
   .divider-wrap.on-cream{background:var(--mint-bg);}
 
+  /* ===== Diagnosis findings ===== */
+  .diagnosis-grid{
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    margin-top:32px;
+  }
+  .diagnosis-item{
+    flex:1 1 320px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .diagnosis-img{
+    width:100%;
+    border-radius:16px;
+    object-fit:cover;
+    object-position:top;
+  }
+
   /* ===== At a glance ===== */
   .glance{
     background:var(--mint-bg);
@@ -658,6 +678,16 @@
         <p class="a">The company helps researchers polish papers before they submit to journals. This service page is where people pick a service: Standard, Advanced, or Scientific Editing. We're introducing a 4th - Post-AI Editing, or papers drafted with AI tools and rebranding the page with client facing names for services.</p>
       </div>
     </div>
+    <div class="diagnosis-grid">
+      <div class="diagnosis-item">
+        <img class="diagnosis-img" src="Diagnosis - User Intent (Dead Clicks).png" alt="User intent heatmap showing dead clicks where visitors expect actions">
+        <p class="caption">User Intent — dead clicks show where people expect clickable actions that don't exist yet.</p>
+      </div>
+      <div class="diagnosis-item">
+        <img class="diagnosis-img" src="Diagnosis - Scroll Depth.png" alt="Scroll depth chart showing how far users read down the pricing page">
+        <p class="caption">Scroll Depth — most visitors bounce before reaching the pricing plans below the fold.</p>
+      </div>
+    </div>
   </section>
 
   <div class="divider-wrap"><hr class="divider"></div>
@@ -687,7 +717,7 @@
     <h2>Before → After</h2>
     <div class="ba-row">
       <div class="ba-col">
-        <a href="Live version (2).png" target="_blank" rel="noopener" class="ba-link">
+        <a href="Live version (3).png" target="_blank" rel="noopener" class="ba-link">
           <div class="ba-placeholder">
             <img class="ba-image" src="English Language Editing Services to Publish in High-Impact Journals _ Wiley.png" alt="Before screenshot of the Wiley English Language Editing services page">
             <span class="ba-overlay">View design</span>
@@ -710,9 +740,9 @@
         </div>
       </div>
       <div class="ba-col">
-        <a href="Desktop (2).png" target="_blank" rel="noopener" class="ba-link">
+        <a href="Desktop (6).png" target="_blank" rel="noopener" class="ba-link">
           <div class="ba-placeholder">
-            <img class="ba-image" src="Desktop (2).png" alt="After screenshot of the redesigned editing services pricing plans">
+            <img class="ba-image" src="Desktop (6).png" alt="After screenshot of the redesigned editing services pricing plans">
             <span class="ba-overlay">View design</span>
           </div>
         </a>
