@@ -290,11 +290,16 @@
     flex-direction:column;
     gap:8px;
   }
+  .diagnosis-img-wrap{
+    max-height:400px;
+    overflow:auto;
+    border-radius:16px;
+  }
   .diagnosis-img{
     width:100%;
-    border-radius:16px;
-    object-fit:cover;
-    object-position:top;
+    height:auto;
+    display:block;
+    border-radius:inherit;
   }
 
   /* ===== At a glance ===== */
@@ -680,11 +685,15 @@
     </div>
     <div class="diagnosis-grid">
       <div class="diagnosis-item">
-        <img class="diagnosis-img" src="Diagnosis - User Intent (Dead Clicks).png" alt="User intent heatmap showing dead clicks where visitors expect actions">
+        <div class="diagnosis-img-wrap">
+          <img class="diagnosis-img" src="Diagnosis - User Intent (Dead Clicks).png" alt="User intent heatmap showing dead clicks where visitors expect actions">
+        </div>
         <p class="caption">User Intent — dead clicks show where people expect clickable actions that don't exist yet.</p>
       </div>
       <div class="diagnosis-item">
-        <img class="diagnosis-img" src="Diagnosis - Scroll Depth.png" alt="Scroll depth chart showing how far users read down the pricing page">
+        <div class="diagnosis-img-wrap">
+          <img class="diagnosis-img" src="Diagnosis - Scroll Depth.png" alt="Scroll depth chart showing how far users read down the pricing page">
+        </div>
         <p class="caption">Scroll Depth — most visitors bounce before reaching the pricing plans below the fold.</p>
       </div>
     </div>
