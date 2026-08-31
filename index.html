@@ -283,6 +283,9 @@
     display:flex;
     flex-direction:column;
     gap:40px;
+    padding-top:var(--space-5);
+    padding-bottom:var(--space-5);
+    gap:var(--space-4);
   }
   .diagnosis h2{
     color:var(--forest);
@@ -297,40 +300,50 @@
     color:var(--body);
     max-width:820px;
   }
-  .diag-row{
-    display:flex;
-    align-items:center;
-    gap:48px;
-    flex-wrap:wrap;
+  .diag-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:24px;
+    align-items:stretch;
   }
-  .diag-row.reverse{flex-direction:row-reverse;}
-  .diag-text{
-    flex:1 1 320px;
+  .diag-card{
+    background:#fff;
+    border:1px solid var(--mint-line);
+    border-radius:16px;
+    padding:20px;
     display:flex;
     flex-direction:column;
-    gap:12px;
+    gap:10px;
+    height:100%;
   }
   .diag-num{
-    font-size:48px;
+    font-size:34px;
     font-weight:800;
     color:var(--forest);
     line-height:1;
   }
   .diag-copy{
-    font-size:18px;
-    line-height:1.6;
+    font-size:15px;
+    line-height:1.5;
     color:var(--body);
+    min-height:66px;
   }
-  .diag-shot{flex:1 1 380px;}
-  .diag-shot img{
-    width:100%;
+  .diag-shot{
+    height:140px;
+    overflow-y:auto;
     border:1px solid var(--gold-border);
-    border-radius:12px;
+    border-radius:10px;
+    background:#fdfbf3;
   }
-  .diag-source{
+  .diag-shot img{
     display:block;
-    margin-top:8px;
-    font-size:13px;
+    width:100%;
+    height:auto;
+  }
+  .diag-shot::-webkit-scrollbar{width:6px;}
+  .diag-shot::-webkit-scrollbar-thumb{background:var(--gold-border);border-radius:6px;}
+  .diag-source{
+    font-size:12px;
     color:var(--old-caption);
   }
 
@@ -572,7 +585,6 @@
     .hero-title{font-size:32px;}
     .context-row h2, .actual-screens-header h2{width:100%;}
     .glance-cards{flex-direction:column;}
-    .diag-row, .diag-row.reverse{flex-direction:column;}
     .ba-frame{max-height:420px;}
   }
   .ba-frame{box-sizing:border-box;}
@@ -591,7 +603,8 @@
   .context-row,.actual-screens-header{gap:var(--space-5);}
   .context-text,.actual-screens-intro{gap:var(--space-2);}
   .diagnosis{padding-top:var(--space-5);padding-bottom:var(--space-5);gap:var(--space-4);}
-  .diag-row{gap:var(--space-5);}
+  .diag-grid{gap:var(--space-4);}
+  .diag-card{padding:var(--space-4);gap:var(--space-3);}
   .glance{gap:var(--space-5);}
   .glance-card{padding:var(--space-3);gap:var(--space-3);}
   .glance-cards{gap:var(--space-4);}
@@ -607,6 +620,9 @@
   .whats-next-list{gap:var(--space-2);}
   .wn-item{gap:var(--space-2);}
   @media(max-width:700px){section{padding-top:var(--space-5);padding-bottom:var(--space-5);}.timeline{gap:var(--space-3);}}
+  @media (max-width:640px){
+    .diag-grid{grid-template-columns:1fr;}
+  }
 </style>
 </head>
 <body>
@@ -667,43 +683,57 @@
     </div>
   </section>
 
-  <!-- ===== Context ===== -->
-  <section class="context">
-    <div class="context-row">
-      <h2>Context</h2>
-      <div class="context-text">
-        <p class="q">What this page does?</p>
-        <p class="a">The company helps researchers polish papers before they submit to journals. This service page is where people pick a service: Standard, Advanced, or Scientific Editing. We're introducing a 4th - Post-AI Editing, or papers drafted with AI tools and rebranding the page with client facing names for services.</p>
-      </div>
-    </div>
-  </section>
-
   <div class="divider-wrap"><hr class="divider"></div>
 
   <!-- ===== Diagnosis ===== -->
   <section class="diagnosis" id="diagnosis">
     <h2>Diagnosis</h2>
-    <p class="diagnosis-intro">Before redesigning, I reviewed 30 days of Microsoft Clarity data on the live page including scroll depth, attention heatmaps, and session recordings. Two numbers made the brief for me.</p>
+    <p class="diagnosis-intro">Before redesigning, I looked at 30 days of real visitor data. Most people use a desktop, not a phone - so that's the focus here.</p>
 
-    <div class="diag-row">
-      <div class="diag-text">
+    <div class="diag-grid">
+      <div class="diag-card">
         <span class="diag-num">66%</span>
-        <p class="diag-copy">of visitors never scroll past the halfway point of the page - the plan comparison never gets seen by most people who land here.</p>
+        <p class="diag-copy">Most visitors stop scrolling halfway down the page. They never even see the plans.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Scroll Depth.png" alt="Microsoft Clarity scroll depth chart showing the share of sessions remaining at each depth of the page">
+        </div>
+        <span class="diag-source">Scroll depth, all sessions</span>
       </div>
-      <div class="diag-shot">
-        <img src="Diagnosis - Scroll Depth.png" alt="Microsoft Clarity scroll depth chart showing the share of sessions remaining at each depth of the page">
-        <span class="diag-source">Source: Microsoft Clarity, scroll depth, all sessions</span>
-      </div>
-    </div>
 
-    <div class="diag-row reverse">
-      <div class="diag-text">
+      <div class="diag-card">
         <span class="diag-num">0%</span>
-        <p class="diag-copy">of sessions with dead clicks on the comparison table were low intent. Every one was medium or high - the people getting stuck were the ones closest to converting.</p>
+        <p class="diag-copy">Not one of the 101 people who got stuck on the table was just browsing. Most (65) were highly interested buyers.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - User Intent (Dead Clicks).png" alt="Microsoft Clarity user intent chart filtered to sessions with dead clicks: 64% high intent, 36% medium intent, 0% low intent">
+        </div>
+        <span class="diag-source">User intent, dead-click sessions only (101 sessions)</span>
       </div>
-      <div class="diag-shot">
-        <img src="Diagnosis - User Intent (Dead Clicks).png" alt="Microsoft Clarity user intent chart filtered to sessions with dead clicks: 64% high intent, 36% medium intent, 0% low intent">
-        <span class="diag-source">Source: Microsoft Clarity, user intent, dead-click sessions only</span>
+
+      <div class="diag-card">
+        <span class="diag-num">92%</span>
+        <p class="diag-copy">9 out of 10 visits happen on a desktop, not a phone. So the redesign is built for desktop first.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Devices.png" alt="Microsoft Clarity device breakdown: 92.35% PC, 6.96% Mobile, 0.70% Other">
+        </div>
+        <span class="diag-source">Devices, all sessions</span>
+      </div>
+
+      <div class="diag-card">
+        <span class="diag-num">36%</span>
+        <p class="diag-copy">More than a third of people's attention stays near the very top of the page.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Attention.png" alt="Microsoft Clarity attention heatmap of the top of the live desktop page">
+        </div>
+        <span class="diag-source">Attention heatmap, all sessions</span>
+      </div>
+
+      <div class="diag-card">
+        <span class="diag-num">91%</span>
+        <p class="diag-copy">9 in 10 of the top traffic sources are Wiley's own pages, not a search engine.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Referrers.png" alt="Microsoft Clarity top referrers: onlinelibrary.wiley.com, wileyeditingservices.com, en.wileyeditingservices.com, authors.wiley.com, google.com">
+        </div>
+        <span class="diag-source">Top referrers, all sessions</span>
       </div>
     </div>
   </section>
