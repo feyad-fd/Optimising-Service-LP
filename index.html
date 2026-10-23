@@ -3,328 +3,860 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Optimising SL2 - $22.3K incremental revenue in Q2</title>
-<meta name="description" content="Product design case study: optimising SL2, the screen where authors pick an editing service.">
+<title>Optimising the Editing Services Page</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Wiley tokens */
-    --blue-100:#F2F6FD; --blue-200:#D2E1F9; --blue-300:#A6C4F2; --blue-400:#79A6EC; --blue-500:#4C88E6;
-    --blue-600:#1F6BE0; --blue-700:#123D80; --blue-800:#0D2B59;
-    --text-primary:#1A1A1A; --text-secondary:#262626; --text-tertiary:#757575;
-    --radius:4px; --radius-img:8px;
-    /* Values used in the Figma file */
-    --nav-bg:#A7C5F3; --nav-border:#BED7FF; --band:#E9F0FC; --chip:#BCD2F6; --line:#D5D5D5;
-    --gutter:clamp(20px,6.25vw,80px);
+    --navy:#001428;
+    --forest:#1a4a3a;
+    --forest-2:#2d7a5a;
+    --body:#262626;
+    --body-2:#262625;
+    --mint-strong:#82eda6;
+    --mint-soft:#b5ead7;
+    --mint-line:#c4eddf;
+    --mint-row-line:#d8f3ea;
+    --mint-bg:#f7fcfb;
+    --cream:#f8f7ec;
+    --pink-tag:#fccddc;
+    --pink-soft:#ffb3c6;
+    --pink-dot:#ff6b8a;
+    --red-tag:#fe5e5e;
+    --red-card-bg:#fff5f5;
+    --red-card-border:#fcc;
+    --green-card-bg:#ebf9f4;
+    --green-card-border:#94d1b5;
+    --green-dot:#2d9b6f;
+    --gold-border:#e8d090;
+    --yellow-tag:#fff9c4;
+    --old-caption:#3a5a50;
+    --page-bg:#ffffff;
   }
-  *{box-sizing:border-box;margin:0;}
-  html{scroll-padding-top:88px;}
-  @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
-  body{font-family:'Poppins',sans-serif;color:var(--text-primary);background:var(--band);-webkit-font-smoothing:antialiased;}
-  img{display:block;max-width:100%;}
-  ul{list-style:none;padding:0;}
-  a:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
-  .inner{max-width:1280px;margin:0 auto;padding-inline:var(--gutter);}
 
-  /* ===== Navigation ===== */
-  .nav{position:sticky;top:0;z-index:20;background:var(--nav-bg);border-bottom:1px solid var(--nav-border);}
-  .nav .inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:8px 11px;}
-  .nav-title{font-weight:700;font-size:16px;line-height:20px;color:var(--blue-800);text-decoration:none;white-space:nowrap;}
-  .nav-links{display:flex;gap:24px;}
-  .nav-links a{font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:none;white-space:nowrap;}
-  .nav-links a:hover{text-decoration:underline;}
-  .btn{display:inline-flex;align-items:center;justify-content:center;height:48px;min-width:163px;padding:0 22px;border-radius:8px;background:var(--text-primary);color:#fff;font-weight:700;font-size:14px;line-height:20px;text-decoration:none;white-space:nowrap;}
-  .btn:hover{background:var(--blue-800);}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--page-bg);
+    color:var(--body);
+    font-family:'Poppins',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  p{margin:0;}
+
+  .display{
+    font-family:'Cooper Five Opti','Cooper Black',Georgia,serif;
+    font-weight:900;
+  }
+
+  .wrap{
+    max-width:1280px;
+    margin:0 auto;
+  }
+  section, header{
+    padding-left:clamp(20px,7vw,100px);
+    padding-right:clamp(20px,7vw,100px);
+  }
+
+  /* ===== Header ===== */
+  .site-header{
+    background:var(--mint-strong);
+    padding-top:18px;
+    padding-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .logo{
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.16px;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin:0;
+  }
+  .site-nav{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .site-nav li{
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.44px;
+    text-transform:uppercase;
+    color:var(--navy);
+  }
+  .site-nav a,
+  .header-pill{
+    color:inherit;
+    text-decoration:none;
+  }
+  .header-pill{
+    border:1px solid var(--navy);
+    border-radius:999px;
+    padding:6px 11px;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.44px;
+    text-transform:uppercase;
+    color:var(--navy);
+    white-space:nowrap;
+  }
 
   /* ===== Hero ===== */
-  .hero{background:linear-gradient(180deg,var(--blue-300) 0%,var(--blue-200) 45.118%,var(--band) 100%);padding-block:32px;}
-  .hero-title{padding-block:24px;}
-  .hero h1{font-size:32px;line-height:normal;font-weight:700;color:var(--text-primary);}
-  .hero h1 span{display:block;}
-  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-  .chip{display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:156px;padding:0 12px;border-radius:var(--radius);background:var(--blue-100);font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);white-space:nowrap;}
-  .shots{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;}
-  .shot{position:relative;aspect-ratio:549/377;border-radius:var(--radius-img);overflow:hidden;background:#fff;}
-  .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;}
-  .shot.framed{border:8px solid var(--blue-400);}
-
-  /* ===== Details + timeline ===== */
-  .details-band{background:var(--band);padding-block:60px;}
-  .details{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
-  .label{font-weight:500;font-size:17.7px;line-height:27px;color:var(--text-tertiary);text-transform:uppercase;}
-  .value{font-weight:400;font-size:20px;line-height:35.4px;color:var(--text-primary);}
-  .timeline-wrap{padding-top:32px;}
-  .timeline{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin-top:24px;}
-  .timeline::before{content:'';position:absolute;left:9px;right:0;top:14px;height:1px;background:var(--line);}
-  .ms{position:relative;padding-top:45px;padding-bottom:20px;}
-  .ms::before{content:'';position:absolute;left:0;top:5.5px;width:18px;height:18px;border-radius:50%;background:var(--m);}
-  .ms .date{display:block;font-weight:500;font-size:17.7px;line-height:27px;color:var(--text-tertiary);text-transform:uppercase;}
-  .ms .phase{display:block;margin-top:5px;font-weight:400;font-size:20px;line-height:35.4px;color:var(--text-primary);}
-  .ms.launch::after{content:'';position:absolute;left:-5.5px;top:0;width:29px;height:29px;border-radius:50%;border:2px solid var(--blue-700);}
-  .ms.launch .date{font-weight:600;color:var(--blue-700);}
-  .ms.launch .phase{font-weight:600;}
-
-  /* ===== Story sections (shared gradient) ===== */
-  .story{background:linear-gradient(180deg,var(--band) 0%,var(--blue-200) 85.445%,var(--blue-300) 100%);}
-  .sec{padding-block:60px;}
-  .sec .inner{display:flex;flex-direction:column;gap:24px;}
-  .sec-head{display:flex;gap:48px;align-items:flex-start;}
-  .sec-head h2{flex:0 0 241px;font-weight:700;font-size:36px;line-height:38px;color:var(--blue-800);}
-  .sec-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
-  .lead{font-weight:600;font-size:20px;line-height:30px;color:var(--text-primary);}
-  .sub{font-weight:400;font-size:16px;line-height:24px;color:var(--text-secondary);}
-  .full{border-radius:var(--radius-img);overflow:hidden;background:#fff;position:relative;}
-  .full img{width:100%;height:auto;}
-  .annot{position:absolute;background:rgba(105,255,85,.15);border:2px dashed #006f06;pointer-events:none;}
-  .points{display:flex;flex-direction:column;gap:16px;}
-  .points li{display:flex;gap:16px;align-items:flex-start;}
-  .num{flex:0 0 36px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);background:var(--chip);font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);}
-  .num.alt{background:var(--blue-400);}
-  .points p{flex:1;min-width:0;font-weight:400;font-size:16px;line-height:24px;color:var(--text-secondary);padding-top:2px;}
-  .shots-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;}
-  .shots-2 .shot:first-child{aspect-ratio:549/377;}
-  .shots-2 .shot:last-child{aspect-ratio:549/433;}
-  .shots-2 .shot:last-child img{object-position:50% 2.6%;}
-
-  /* ===== Impact ===== */
-  .impact-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;}
-  .card{background:rgba(255,255,255,.72);border:1px solid var(--nav-border);border-radius:var(--radius-img);padding:32px;}
-  .kpi-big{font-weight:700;font-size:64px;line-height:1;color:var(--blue-800);}
-  .kpi-label{margin-top:8px;font-weight:600;font-size:20px;line-height:30px;color:var(--text-primary);}
-  .kpi-rows{margin-top:24px;border-top:1px solid var(--nav-border);}
-  .kpi-row{display:flex;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--nav-border);}
-  .kpi-row.no-border{border-bottom:none;}
-  .kpi-row b{flex:0 0 104px;font-weight:700;font-size:28px;line-height:1.2;color:var(--blue-800);}
-  .kpi-row span{font-size:16px;line-height:24px;color:var(--text-secondary);}
-  .chart-title{font-weight:600;font-size:14px;line-height:20px;color:var(--text-tertiary);}
-  .chart{display:flex;align-items:flex-end;gap:24px;height:350px;margin-top:16px;}
-  .bar-col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;}
-  .bar-val{font-weight:700;font-size:16px;line-height:24px;color:var(--blue-800);}
-  .bar{width:72%;border-radius:var(--radius) var(--radius) 0 0;background:var(--blue-600);}
-  .bar.proj{background:repeating-linear-gradient(135deg,var(--blue-300) 0 8px,var(--blue-100) 8px 16px);border:1.5px dashed var(--blue-600);border-bottom:0;}
-  .bar-x{font-weight:500;font-size:14px;line-height:20px;color:var(--text-primary);text-align:center;}
-  .bar-sub{font-size:12px;line-height:16px;color:var(--text-tertiary);text-align:center;}
-  .chart-note{margin-top:12px;font-size:14px;line-height:20px;color:var(--text-tertiary);}
-  .note{font-size:14px;line-height:20px;color:var(--text-secondary);max-width:760px;}
-
-  .tail{padding-bottom:20px;}
-
-  /* ===== Responsive ===== */
-  @media (max-width:1000px){
-    .nav .inner{flex-wrap:wrap;padding-block:12px;}
-    .nav-links{order:3;width:100%;flex-wrap:wrap;gap:8px 20px;}
-    html{scroll-padding-top:130px;}
+  .hero{
+    background:var(--cream);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:32px;
   }
-  @media (max-width:860px){
-    .shots,.shots-2,.impact-grid{grid-template-columns:1fr;}
-    .sec-head{flex-direction:column;gap:12px;}
-    .sec-head h2{flex:none;}
-    .timeline{grid-template-columns:1fr;margin-top:16px;}
-    .timeline::before{left:8.5px;right:auto;top:14px;bottom:30px;width:1px;height:auto;}
-    .ms{padding:0 0 28px 40px;}
-    .ms::before{top:4px;}
-    .ms.launch::after{top:-1.5px;left:-5.5px;}
-    .ms .phase{margin-top:0;}
-    .hero h1{font-size:28px;}
-    .chart{height:320px;}
+  .hero-tag{
+    display:inline-flex;
+    background:var(--pink-tag);
+    border-radius:100px;
+    padding:8px 16px;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.16px;
+    text-transform:uppercase;
+    color:var(--navy);
   }
-  @media (max-width:520px){
-    .sec,.details-band{padding-block:40px;}
-    .sec-head h2{font-size:30px;line-height:34px;}
-    .card{padding:20px;}
-    .kpi-big{font-size:52px;}
-    .chip{min-width:0;}
+  .hero-title{
+    color:var(--forest);
+    font-size:clamp(30px,5vw,48px);
+    line-height:1.15;
+    text-transform:uppercase;
+    margin:16px 0 0;
+  }
+  .hero-sub{
+    font-size:18px;
+    line-height:1.5;
+    color:var(--body);
+    max-width:1080px;
+    margin-top:16px;
+  }
+  .hero-sub .light{font-weight:400;}
+  .hero-sub .semib{font-weight:600;}
+
+  .meta-row{
+    border-top:2px solid var(--mint-line);
+    padding-top:32px;
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .meta-item{flex:1 1 200px;display:flex;flex-direction:column;gap:4px;}
+  .meta-item .label{
+    font-weight:700;
+    font-size:14px;
+    text-transform:uppercase;
+    color:var(--body);
+  }
+  .meta-item .value{
+    font-weight:500;
+    font-size:18px;
+    color:var(--body);
+  }
+  .meta-full{margin-top:24px;}
+  .timeline{
+    display:flex;
+    gap:0;
+    list-style:none;
+    margin:8px 0 0;
+    padding:0;
+  }
+  .timeline-step{
+    position:relative;
+    flex:1;
+    padding:36px 24px 0 0;
+    color:var(--body);
+  }
+  .timeline-step:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    top:10px;
+    left:12px;
+    right:0;
+    height:2px;
+    background:var(--mint-line);
+  }
+  .timeline-step::before{
+    content:'';
+    position:absolute;
+    top:3px;
+    left:0;
+    width:16px;
+    height:16px;
+    border:4px solid var(--cream);
+    border-radius:50%;
+    background:var(--red-tag);
+    box-shadow:0 0 0 2px var(--red-tag);
+    z-index:1;
+  }
+  .timeline-date,
+  .timeline-event{display:block;}
+  .timeline-date{
+    color:var(--forest);
+    font-size:14px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+  .timeline-event{
+    margin-top:4px;
+    font-size:16px;
+    font-weight:500;
+  }
+
+  @media (max-width:700px){
+    .timeline{flex-direction:column;gap:20px;padding-left:12px;}
+    .timeline-step{padding:0 0 0 28px;}
+    .timeline-step:not(:last-child)::after{
+      top:14px;
+      left:6px;
+      right:auto;
+      width:2px;
+      height:calc(100% + 20px);
+    }
+    .timeline-step::before{top:3px;left:-6px;}
+  }
+
+  /* ===== Context ===== */
+  .context{
+    background:var(--mint-bg);
+    padding-top:60px;
+    padding-bottom:60px;
+  }
+  .context-row{
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .context-row h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    width:300px;
+    max-width:100%;
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+  }
+  .context-text{flex:1 1 400px;display:flex;flex-direction:column;gap:16px;}
+  .context-text .q{
+    font-weight:600;
+    font-size:20px;
+    line-height:1.6;
+    color:var(--body);
+  }
+  .context-text .a{
+    font-weight:400;
+    font-size:18px;
+    line-height:1.7;
+    color:var(--body);
+  }
+
+  .divider{
+    max-width:1118px;
+    margin:0 auto;
+    border:none;
+    border-top:1px solid var(--mint-row-line);
+  }
+  .divider-wrap{background:var(--mint-bg);padding:0 clamp(20px,7vw,100px);}
+  .divider-wrap.on-cream{background:var(--mint-bg);}
+
+  /* ===== Diagnosis ===== */
+  .diagnosis{
+    background:var(--mint-bg);
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+    padding-top:var(--space-5);
+    padding-bottom:var(--space-5);
+    gap:var(--space-4);
+  }
+  .diagnosis h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+  }
+  .diagnosis-intro{
+    font-size:18px;
+    line-height:1.7;
+    color:var(--body);
+    max-width:820px;
+  }
+  .diag-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:24px;
+    align-items:stretch;
+  }
+  .diag-card{
+    background:#fff;
+    border:1px solid var(--mint-line);
+    border-radius:16px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    height:100%;
+  }
+  .diag-num{
+    font-size:34px;
+    font-weight:800;
+    color:var(--forest);
+    line-height:1;
+  }
+  .diag-copy{
+    font-size:15px;
+    line-height:1.5;
+    color:var(--body);
+    min-height:66px;
+  }
+  .diag-shot{
+    height:200px;
+    overflow-y:auto;
+    border:1px solid var(--gold-border);
+    border-radius:10px;
+    background:#fdfbf3;
+  }
+  .diag-shot img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .diag-shot::-webkit-scrollbar{width:6px;}
+  .diag-shot::-webkit-scrollbar-thumb{background:var(--gold-border);border-radius:6px;}
+  .diag-source{
+    font-size:12px;
+    color:var(--old-caption);
+  }
+
+  /* ===== At a glance ===== */
+  .glance{
+    background:var(--mint-bg);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:64px;
+  }
+  .glance-header p.eyebrow{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:800;
+    margin:0 0 4px;
+  }
+  .glance-header p.sub{
+    color:#3a2030;
+    font-size:18px;
+    max-width:720px;
+  }
+  .glance-cards{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .glance-card{
+    flex:1 1 320px;
+    border-radius:20px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .glance-card.problem{
+    background:var(--red-card-bg);
+    border:1px solid var(--red-card-border);
+  }
+  .glance-card.goal{
+    background:var(--green-card-bg);
+    border:1px solid var(--green-card-border);
+  }
+  .glance-tag{
+    display:inline-flex;
+    align-self:flex-start;
+    border-radius:100px;
+    padding:10px 24px;
+    font-weight:800;
+    font-size:14px;
+    text-transform:uppercase;
+  }
+  .glance-tag.problem{background:var(--red-tag);color:#fff;}
+  .glance-tag.goal{background:var(--forest);color:#fff;}
+  .glance-card p.body-text{
+    font-size:18px;
+    line-height:1.6;
+    color:#3a2030;
+  }
+  .glance-card.goal p.body-text{color:var(--body-2);}
+  .glance-card p.body-text strong{color:var(--body);font-weight:400;}
+  .glance-card.problem p.body-text strong{background:var(--red-tag);color:#fff;padding:2px 6px;border-radius:4px;}
+
+  /* ===== Before / After ===== */
+  .before-after{
+    background:#ebf9f4;
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+  .before-after h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+  }
+  .ba-row{
+    display:flex;
+    flex-direction:column;
+    gap:56px;
+  }
+  .ba-col{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .ba-col-label{
+    display:inline-flex;
+    align-self:flex-start;
+    border-radius:100px;
+    padding:6px 16px;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.4px;
+    text-transform:uppercase;
+  }
+  .ba-col-label.before{background:var(--pink-soft);color:#7a1f38;}
+  .ba-col-label.after{background:var(--mint-soft);color:var(--forest);}
+
+  .ba-frame{
+    position:relative;
+    max-height:640px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    border:1px solid var(--gold-border);
+    border-radius:12px;
+    background:#fff;
+  }
+  .ba-frame-inner{position:relative;}
+  .ba-full-image{width:100%;display:block;}
+
+  .ba-marker{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+    color:#fff;
+    border:2px solid #fff;
+    box-shadow:0 2px 8px rgba(0,0,0,0.35);
+  }
+  .ba-marker.before{background:var(--pink-dot);}
+  .ba-marker.after{background:var(--green-dot);}
+
+  .ba-open-link{
+    align-self:flex-start;
+    font-size:14px;
+    font-weight:600;
+    color:var(--forest);
+  }
+
+  .ba-col p.caption{font-size:18px;line-height:1.6;color:var(--body);}
+  .ba-callouts{display:flex;flex-direction:column;gap:12px;}
+  .ba-callout{display:flex;gap:10px;align-items:center;}
+  .dot-wrap{
+    width:24px;height:24px;border-radius:100px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    font-weight:800;
+    font-size:12px;
+    color:#fff;
+  }
+  .dot-wrap.before{background:var(--pink-dot);}
+  .dot-wrap.after{background:var(--green-dot);}
+  .ba-callout p{font-size:18px;color:var(--body);flex:1;}
+
+  /* ===== Actual screens ===== */
+  .actual-screens{
+    background:var(--mint-soft);
+    padding-top:100px;
+    padding-bottom:120px;
+  }
+  .actual-screens-header{
+    display:flex;
+    gap:80px;
+    flex-wrap:wrap;
+  }
+  .actual-screens-header h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    width:300px;
+    max-width:100%;
+    margin:0;
+  }
+  .actual-screens-intro{
+    flex:1 1 400px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .actual-screens-intro p.h3{
+    font-weight:700;
+    color:var(--forest);
+    font-size:16px;
+    line-height:1.6;
+  }
+  .actual-screens-intro p.body-sm{
+    font-weight:400;
+    color:var(--forest-2);
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  /* ===== What's next ===== */
+  .whats-next{
+    background:var(--mint-bg);
+    padding-top:60px;
+    padding-bottom:60px;
+    display:flex;
+    flex-direction:column;
+    gap:64px;
+  }
+  .whats-next h2{
+    color:var(--forest);
+    font-size:40px;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+  }
+  .whats-next-body{display:flex;flex-direction:column;gap:24px;}
+  .whats-next-body > p.intro{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--old-caption);
+  }
+  .whats-next-list{display:flex;flex-direction:column;gap:16px;}
+  .wn-item{display:flex;gap:14px;align-items:center;}
+  .num-pill{
+    flex-shrink:0;
+    border-radius:100px;
+    padding:4px 12px;
+    font-weight:800;
+    font-size:14px;
+    color:var(--forest);
+  }
+  .num-pill.green{background:var(--mint-soft);}
+  .num-pill.pink{background:var(--pink-soft);}
+  .wn-item p{
+    font-size:15px;
+    color:var(--forest);
+    flex:1;
+  }
+
+  @media (max-width:640px){
+    .site-nav{order:3;width:100%;justify-content:center;}
+    .hero-title{font-size:32px;}
+    .context-row h2, .actual-screens-header h2{width:100%;}
+    .glance-cards{flex-direction:column;}
+    .ba-frame{max-height:420px;}
+  }
+  .ba-frame{box-sizing:border-box;}
+  :root{--space-1:8px;--space-2:16px;--space-3:24px;--space-4:32px;--space-5:48px;--space-6:64px;}
+  section{padding-top:var(--space-6);padding-bottom:var(--space-6);}
+  section[id]{scroll-margin-top:80px;}
+  .site-header{padding-top:var(--space-2);padding-bottom:var(--space-2);gap:var(--space-2);}
+  .site-nav a{color:inherit;text-decoration:none;}
+  .hero{gap:var(--space-5);}
+  .hero-title{margin-top:var(--space-3);}
+  .hero-sub{margin-top:var(--space-2);}
+  .meta-row{padding-top:var(--space-5);gap:var(--space-4);}
+  .meta-item{gap:var(--space-1);}
+  .meta-full{margin-top:var(--space-3);}
+  .context{padding-top:var(--space-5);padding-bottom:var(--space-5);}
+  .context-row,.actual-screens-header{gap:var(--space-5);}
+  .context-text,.actual-screens-intro{gap:var(--space-2);}
+  .diagnosis{padding-top:var(--space-5);padding-bottom:var(--space-5);gap:var(--space-4);}
+  .diag-grid{gap:var(--space-4);}
+  .diag-card{padding:var(--space-4);gap:var(--space-3);}
+  .glance{gap:var(--space-5);}
+  .glance-card{padding:var(--space-3);gap:var(--space-3);}
+  .glance-cards{gap:var(--space-4);}
+  .before-after,.whats-next{gap:var(--space-3);}
+  .ba-row{gap:var(--space-5);}
+  .ba-col{gap:var(--space-3);}
+  .ba-callouts{gap:var(--space-2);}
+  .ba-callout{gap:var(--space-2);}
+  .actual-screens{padding-top:var(--space-6);padding-bottom:var(--space-6);}
+  .actual-screens-header{gap:var(--space-6);}
+  .whats-next{gap:var(--space-5);}
+  .whats-next-body{gap:var(--space-3);}
+  .whats-next-list{gap:var(--space-2);}
+  .wn-item{gap:var(--space-2);}
+  @media(max-width:700px){section{padding-top:var(--space-5);padding-bottom:var(--space-5);}.timeline{gap:var(--space-3);}}
+  @media (max-width:640px){
+    .diag-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
 <body>
 
-<!--
-  IMAGES: each  loads from images/ first. If the file is missing it falls back to
-  the temporary Figma link in data-fallback (valid for ~7 days only). Export the frames
-  listed in images/README.txt to images/ to make them permanent.
--->
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <p class="logo">Product Design Case Study</p>
+    <ul class="site-nav">
+      <li><a href="#brief">Brief</a></li>
+      <li><a href="#diagnosis">Diagnosis</a></li>
+      <li><a href="#revision">Revision</a></li>
+      <li><a href="#reflection">Reflection</a></li>
+    </ul>
+    <a class="header-pill" href="https://www.figma.com/design/ck9DC9QSCnVsZqc7qsY8zC/English-Language-Editing-Page?node-id=0-1&amp;t=Zlw4gX4m2lH0WwHv-1" target="_blank" rel="noreferrer">View Project</a>
+  </header>
 
-<header class="nav">
-  <div class="inner">
-    <a class="nav-title" href="#top">Service LP Optimisation</a>
-    <nav aria-label="Case study sections">
-      <ul class="nav-links">
-        <li><a href="#diagnosis">Diagnosis</a></li>
-        <li><a href="#design-decisions">Design Decisions</a></li>
-        <li><a href="#impact">Impact</a></li>
-        <li><a href="#also-shipped">Also shipped</a></li>
-        <li><a href="#next">Next</a></li>
-      </ul>
-    </nav>
-    <a class="btn" href="https://www.figma.com/design/ck9DC9QSCnVsZqc7qsY8zC/English-Language-Editing-Page?node-id=0-1&amp;t=Zlw4gX4m2lH0WwHv-1" target="_blank" rel="noopener">Open Design File</a>
-  </div>
-</header>
-
-<main id="top">
-
-  <!-- Hero -->
-  <section class="hero" aria-labelledby="title">
-    <div class="inner hero-title">
-      <h1 id="title"><span>Optimising SL2.</span><span>$22.3K incremental revenue in Q2.</span></h1>
-      <ul class="chips" aria-label="Key results">
-        <li class="chip">26 extra jobs in Q2</li>
-        <li class="chip">$858 average order</li>
-        <li class="chip">12 jobs in first 2 weeks</li>
-      </ul>
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="brief">
+    <div>
+      <h1 class="hero-title display">Optimising<br>the editing services page</h1>
+      <p class="hero-sub">Optimising a service landing page for a global research support and academic publishing services company, introducing Post-AI Editing as a new addition to its existing service portfolio.</p>
     </div>
-    <div class="inner shots">
-      <div class="shot">
-        <img src="images/sl2-before.png" data-fallback="https://www.figma.com/api/mcp/asset/aa6e3e2f-1dd6-46c2-8a0a-b72b7fe808ae.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The old SL2 screen: a long comparison table of Standard, Advanced and Premium editing">
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="label">Role</span>
+        <span class="value">Product Designer · POC</span>
       </div>
-      <div class="shot framed">
-        <img src="images/sl2-after-top.png" data-fallback="https://www.figma.com/api/mcp/asset/98400ccb-1d6f-4d3e-93fe-69f830db62f9.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The new SL2 screen: four service cards with prices and a short key-features list">
+      <div class="meta-item">
+        <span class="label">Worked with</span>
+        <span class="value">PMs · Marketing · Devs · Stakeholders</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Tools</span>
+        <span class="value">Figma, Microsoft Clarity, Hotjar</span>
+      </div>
+    </div>
+    <div class="meta-item meta-full">
+      <span class="label">Timeline</span>
+      <ol class="timeline" aria-label="Project timeline">
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 11</span>
+          <span class="timeline-event">Research</span>
+        </li>
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 12</span>
+          <span class="timeline-event">First draft - 3 versions</span>
+        </li>
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 18</span>
+          <span class="timeline-event">Final draft</span>
+        </li>
+        <li class="timeline-step">
+          <span class="timeline-date">Aug 21</span>
+          <span class="timeline-event">Development</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="divider-wrap"><hr class="divider"></div>
+
+  <!-- ===== Diagnosis ===== -->
+  <section class="diagnosis" id="diagnosis">
+    <h2>Diagnosis</h2>
+    <p class="diagnosis-intro">Before redesigning, I looked at 30 days of real visitor data. Most people use a desktop, not a phone - so that's the focus here.</p>
+
+    <div class="diag-grid">
+      <div class="diag-card">
+        <span class="diag-num">66%</span>
+        <p class="diag-copy">Most visitors stop scrolling halfway down the page. They never even see the plans.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Scroll Depth.png" alt="Microsoft Clarity scroll depth chart showing the share of sessions remaining at each depth of the page">
+        </div>
+        <span class="diag-source">Scroll depth, all sessions</span>
+      </div>
+
+      <div class="diag-card">
+        <span class="diag-num">0%</span>
+        <p class="diag-copy">Not one of the 101 people who got stuck on the table was just browsing. Most (65) were highly interested buyers.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - User Intent (Dead Clicks).png" alt="Microsoft Clarity user intent chart filtered to sessions with dead clicks: 64% high intent, 36% medium intent, 0% low intent">
+        </div>
+        <span class="diag-source">User intent, dead-click sessions only (101 sessions)</span>
+      </div>
+
+      <div class="diag-card">
+        <span class="diag-num">92%</span>
+        <p class="diag-copy">9 out of 10 visits happen on a desktop, not a phone. So the redesign is built for desktop first.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Devices.png" alt="Microsoft Clarity device breakdown: 92.35% PC, 6.96% Mobile, 0.70% Other">
+        </div>
+        <span class="diag-source">Devices, all sessions</span>
+      </div>
+
+      <div class="diag-card">
+        <span class="diag-num">36%</span>
+        <p class="diag-copy">More than a third of people's attention stays near the very top of the page.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Attention.png" alt="Microsoft Clarity attention heatmap of the top of the live desktop page">
+        </div>
+        <span class="diag-source">Attention heatmap, all sessions</span>
+      </div>
+
+      <div class="diag-card">
+        <span class="diag-num">91%</span>
+        <p class="diag-copy">9 in 10 of the top traffic sources are Wiley's own pages, not a search engine.</p>
+        <div class="diag-shot">
+          <img src="Diagnosis - Referrers.png" alt="Microsoft Clarity top referrers: onlinelibrary.wiley.com, wileyeditingservices.com, en.wileyeditingservices.com, authors.wiley.com, google.com">
+        </div>
+        <span class="diag-source">Top referrers, all sessions</span>
       </div>
     </div>
   </section>
 
-  <!-- Details + timeline -->
-  <section class="details-band" aria-label="Project details">
-    <div class="inner">
-      <div class="details">
-        <div><p class="label">Role</p><p class="value">Product Designer · POC</p></div>
-        <div><p class="label">Worked with</p><p class="value">PMs · Marketing · Devs · Stakeholders</p></div>
-        <div><p class="label">Tools</p><p class="value">Figma, Microsoft Clarity, Hotjar</p></div>
-        <div><p class="label">Period</p><p class="value">Q2</p></div>
+  <div class="divider-wrap"><hr class="divider"></div>
+
+  <!-- ===== At a glance ===== -->
+  <section class="glance">
+    <div class="glance-header">
+      <p class="eyebrow">At a glance</p>
+      <p class="sub">Two quick summaries of the challenge and the goal.</p>
+    </div>
+    <div class="glance-cards">
+      <div class="glance-card problem">
+        <span class="glance-tag problem">The problem</span>
+        <p class="body-text">Comparing our 3 editing plans already took effort. Post-AI Editing, our 4th service, isn't directly comparable to the others - it doesn't fit the same format. That meant <strong>restructuring</strong> the section, not just adding one more option.</p>
       </div>
-      <div class="timeline-wrap">
-        <p class="label">Timeline</p>
-        <ol class="timeline" style="list-style:none;padding:0;">
-          <li class="ms" style="--m:var(--blue-400)"><span class="date">Aug 11</span><span class="phase">Research</span></li>
-          <li class="ms" style="--m:var(--blue-500)"><span class="date">Aug 12</span><span class="phase">First draft</span></li>
-          <li class="ms" style="--m:var(--blue-600)"><span class="date">Aug 18</span><span class="phase">Final draft</span></li>
-          <li class="ms" style="--m:var(--blue-700)"><span class="date">Aug 21</span><span class="phase">Development</span></li>
-          <li class="ms launch" style="--m:var(--blue-800)"><span class="date">Sep 10</span><span class="phase">Launch</span></li>
-        </ol>
+      <div class="glance-card goal">
+        <span class="glance-tag goal">The goal</span>
+        <p class="body-text">Make all 4 plans easy to scan - in seconds, not minutes.</p>
       </div>
     </div>
   </section>
 
-  <div class="story">
+  <div class="divider-wrap"><hr class="divider"></div>
 
-    <!-- Diagnosis -->
-    <section class="sec" id="diagnosis" aria-labelledby="h-diagnosis">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-diagnosis">Diagnosis</h2>
-          <div class="sec-body">
-            <p class="lead">Service Level 2 is where authors pick a service. If it is unclear, they leave.</p>
-            <p class="sub">We are introducing Post-AI Editing as a new addition to our existing service portfolio.</p>
-          </div>
-        </div>
-        <div class="full">
-          <img src="images/sl2-before.png" data-fallback="https://www.figma.com/api/mcp/asset/aa6e3e2f-1dd6-46c2-8a0a-b72b7fe808ae.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The old SL2 screen in full: a long, text-heavy table comparing Standard, Advanced and Premium editing" loading="lazy">
-        </div>
-        
-        <ul class="points">
-          <li><span class="num">01</span><p>Services are hard to scan and compare.</p></li>
-          <li><span class="num">02</span><p>A 4th service, Post-AI Editing, isn't directly comparable to the others - it doesn't fit the same format.</p></li>
-          <li><span class="num">03</span><p>The tabular format is very text heavy.</p></li>
-        </ul>
-      </div>
-    </section>
+  <!-- ===== Before / After ===== -->
+  <section class="before-after" id="revision">
+    <h2>Before → After</h2>
+    <div class="ba-row">
 
-    <!-- Design decisions -->
-    <section class="sec" id="design-decisions" aria-labelledby="h-decisions">
-      <div class="inner">
-          <h2 id="h-decisions">Design Decisions</h2>
-          <div class="sec-body">
-            <p class="lead">Goal: Let users get what they want without confusing them.</p>
+      <div class="ba-col">
+        <span class="ba-col-label before">Before</span>
+        <div class="ba-frame">
+          <div class="ba-frame-inner">
+            <img class="ba-full-image" src="Live version (3).png" alt="Full-page screenshot of the live Wiley English Language Editing services page, before the redesign">
+            <span class="ba-marker before" style="top:6.5%; left:24%;">1</span>
+            <span class="ba-marker before" style="top:15.5%; left:50%;">2</span>
+            <span class="ba-marker before" style="top:18%; left:50%;">3</span>
           </div>
         </div>
-        <div class="full">
-          <img src="images/sl2-after-full.png" data-fallback="https://www.figma.com/api/mcp/asset/9d9a6571-7d92-4f24-92c0-5c3bcce2fe0d.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The new SL2 screen in full. The price row and the compare section are outlined in green." loading="lazy">
-          <span class="annot" style="left:2.679%;top:41.56%;width:94.64%;height:24.48%;" aria-hidden="true"></span>
-          <span class="annot" style="left:2.679%;top:11.845%;width:94.64%;height:2.448%;" aria-hidden="true"></span>
-        </div>
-        <ul class="points">
-          <li><span class="num">01</span><p>Show only necessary information in front (Progressive Disclosure)</p></li>
-          <li><span class="num">02</span><p>Surface prices upfront, reducing one click and possible dropoffs due to frustration.</p></li>
-          <li><span class="num">03</span><p>Refine copy to make it easy to understand for users.</p></li>
-          <li><span class="num">04</span><p>Web Content Accessibility Guidelines (WCAG) followed</p></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Impact -->
-    <section class="sec" id="impact" aria-labelledby="h-impact">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-impact">Impact</h2>
-          <div class="sec-body">
-            <p class="lead">Better information presentation on services offered: $22.3K incremental revenue in Q2.</p>
+        <p class="caption">Before - already too cluttered - and we're about to add a 4th service, Post-AI Editing.</p>
+        <div class="ba-callouts">
+          <div class="ba-callout">
+            <span class="dot-wrap before">1</span>
+            <p>Hero banner consuming 30% of top fold</p>
           </div>
-        </div>
-        <div class="impact-grid">
-          <div class="card">
-            <p class="kpi-big">$22.3K</p>
-            <p class="kpi-label">incremental revenue in Q2</p>
-            <div class="kpi-rows">
-              <div class="kpi-row"><b>26</b><span>incremental jobs in Q2</span></div>
-              <div class="kpi-row"><b>$858</b><span>average order value</span></div>
-              <div class="kpi-row no-border"><b>12</b><span>incremental jobs in the first 2 weeks after launch ($10,294)</span></div>
-            </div>
+          <div class="ba-callout">
+            <span class="dot-wrap before">2</span>
+            <p>Dense text - hard to scan, no room for a 4th plan</p>
           </div>
-          <div class="card">
-            <p class="chart-title">Revenue: actual vs projected ($K)</p>
-            <div class="chart" role="img" aria-label="Bar chart. First 2 weeks: $10.3K from 12 jobs. Q2: $22.3K from 26 jobs. FY27 projection: $134K from 156 jobs.">
-              <div class="bar-col"><span class="bar-val">$10.3K</span><div class="bar" style="height:18px"></div><span class="bar-x">First 2 weeks</span><span class="bar-sub">12 jobs</span></div>
-              <div class="bar-col"><span class="bar-val">$22.3K</span><div class="bar" style="height:40px"></div><span class="bar-x">Q2</span><span class="bar-sub">26 jobs</span></div>
-              <div class="bar-col"><span class="bar-val">$134.0K</span><div class="bar proj" style="height:240px"></div><span class="bar-x">FY27 projection</span><span class="bar-sub">156 jobs</span></div>
-            </div>
-          </div>
-        </div>
-        <ul class="points">
-          <li><span class="num">01</span><p>First 2 weeks after launch: 12 incremental jobs, $10,294.</p></li>
-          <li><span class="num">02</span><p>Q2: 26 incremental jobs at an average order value of $858.</p></li>
-          <li><span class="num">03</span><p>Projection for the rest of FY27: 156 jobs, about $134,000. Adding testimonials is the next step toward it.</p></li>
-        </ul>
-      </div>
-    </section>
-    <section class="sec" id="also-shipped" aria-labelledby="h-also">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-also">Also Shipped</h2>
-          <div class="sec-body">
-            <p class="lead">The English Language Editing page had the same problems: unclear information and weak design. I fixed it in the same period.</p>
-          </div>
-        </div>
-        <div class="shots-2">
-          <div class="shot">
-            <img src="images/sl2-before.png" data-fallback="https://www.figma.com/api/mcp/asset/aa6e3e2f-1dd6-46c2-8a0a-b72b7fe808ae.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Before: the old page with a text-heavy comparison table" loading="lazy">
-          </div>
-          <div class="shot framed">
-            <img src="images/ele-after.png" data-fallback="https://www.figma.com/api/mcp/asset/7994fffc-7d61-4cde-9eb1-56e26f984eec.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="After: the English Language Editing page with a hero banner and four service cards" loading="lazy">
-          </div>
-        </div>
-        <ul class="points">
-          <li><span class="num alt">01</span><p>High-impact hero banner optimising the top fold</p></li>
-          <li><span class="num alt">02</span><p>4 cards, scannable in seconds</p></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- What's next -->
-    <section class="sec tail" id="next" aria-labelledby="h-next">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-next">What’s Next</h2>
-          <div class="sec-body">
-            <p class="lead">Add testimonials to SL2. Trust matters most to authors from China. The FY27 target depends on it.</p>
+          <div class="ba-callout">
+            <span class="dot-wrap before">3</span>
+            <p>Pricing not shown upfront</p>
           </div>
         </div>
       </div>
-    </section>
 
-  </div>
-</main>
+      <div class="ba-col">
+        <span class="ba-col-label after">After</span>
+        <div class="ba-frame">
+          <div class="ba-frame-inner">
+            <img class="ba-full-image" src="Desktop (6).png" alt="Full-page screenshot of the redesigned editing services page with 4 plan cards, after the redesign">
+            <span class="ba-marker after" style="top:6%; left:76%;">1</span>
+            <span class="ba-marker after" style="top:16%; left:50%;">2</span>
+            <span class="ba-marker after" style="top:22%; left:14%;">3</span>
+          </div>
+        </div>
+        <p class="caption">After - 4 cards, scannable in seconds. Detail is one click away.</p>
+        <div class="ba-callouts">
+          <div class="ba-callout">
+            <span class="dot-wrap after">1</span>
+            <p>High-impact hero banner optimising the top fold</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap after">2</span>
+            <p>4 cards, scannable in seconds</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap after">3</span>
+            <p>Pricing for each service shown upfront, reducing one click</p>
+          </div>
+          <div class="ba-callout">
+            <span class="dot-wrap after">4</span>
+            <p>Web Content Accessibility Guidelines (WCAG) followed</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <!-- ===== What's next ===== -->
+  <section class="whats-next" id="reflection">
+    <h2>What's next</h2>
+    <div class="whats-next-body">
+      <p class="intro">This isn't live yet. Here's what I'll check once it is.</p>
+      <div class="whats-next-list">
+        <div class="wn-item">
+          <span class="num-pill green">01</span>
+          <p>Are people scrolling back up to the navigation and clicking on pricing nav item.</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill pink">02</span>
+          <p>Does the sticky bar cut down on scrolling back up?</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill green">03</span>
+          <p>Has the drop off rate reduced?</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill pink">04</span>
+          <p>Does 'Scientific Editing' read clearer than 'Premium' did?</p>
+        </div>
+        <div class="wn-item">
+          <span class="num-pill green">05</span>
+          <p>Do 'which plan do I need' support tickets go down?</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </body>
 </html>
