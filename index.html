@@ -3,326 +3,536 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Optimising SL2 - $22.3K incremental revenue in Q2</title>
-<meta name="description" content="Product design case study: optimising SL2, the screen where authors pick an editing service.">
+<title>Optimising SL2 - $22.3K incremental revenue in Q2 | Product design case study</title>
+<meta name="description" content="Product design case study: how I redesigned SL2, the screen where authors pick an editing service, and added a 4th service without making the choice harder.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     /* Wiley tokens */
-    --blue-100:#F2F6FD; --blue-200:#D2E1F9; --blue-300:#A6C4F2; --blue-400:#79A6EC; --blue-500:#4C88E6;
-    --blue-600:#1F6BE0; --blue-700:#123D80; --blue-800:#0D2B59;
+    --blue-100:#F2F6FD; --blue-200:#D2E1F9; --blue-300:#A6C4F2; --blue-400:#79A6EC; --blue-600:#1F6BE0; --blue-700:#123D80; --blue-800:#0D2B59;
     --text-primary:#1A1A1A; --text-secondary:#262626; --text-tertiary:#757575;
-    --radius:4px; --radius-img:8px;
+    --border:#D9D9D9; --border-soft:#E0E0E0;
     /* Values used in the Figma file */
-    --nav-bg:#A7C5F3; --nav-border:#BED7FF; --band:#E9F0FC; --chip:#BCD2F6; --line:#D5D5D5;
+    --chip:#BCD2F6; --card-border:#BED7FF; --page-alt:#FBFCFE; --connector:#D5D5D5;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --serif:'IBM Plex Serif',Georgia,'Times New Roman',serif;
     --gutter:clamp(20px,6.25vw,80px);
+    --nav-h:78px;
   }
   *{box-sizing:border-box;margin:0;}
-  html{scroll-padding-top:88px;}
+  html{scroll-padding-top:calc(var(--nav-h) + 16px);}
   @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
-  body{font-family:'Poppins',sans-serif;color:var(--text-primary);background:var(--band);-webkit-font-smoothing:antialiased;}
+  body{font-family:var(--sans);font-size:16px;line-height:24px;color:var(--text-secondary);background:#fff;-webkit-font-smoothing:antialiased;}
   img{display:block;max-width:100%;}
-  ul{list-style:none;padding:0;}
-  a:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
+  ul,ol{list-style:none;padding:0;}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--blue-700);outline-offset:2px;}
   .inner{max-width:1280px;margin:0 auto;padding-inline:var(--gutter);}
 
   /* ===== Navigation ===== */
-  .nav{position:sticky;top:0;z-index:20;background:var(--nav-bg);border-bottom:1px solid var(--nav-border);}
-  .nav .inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:8px 11px;}
-  .nav-title{font-weight:700;font-size:16px;line-height:20px;color:var(--blue-800);text-decoration:none;white-space:nowrap;}
-  .nav-links{display:flex;gap:24px;}
-  .nav-links a{font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:none;white-space:nowrap;}
-  .nav-links a:hover{text-decoration:underline;}
-  .btn{display:inline-flex;align-items:center;justify-content:center;height:48px;min-width:163px;padding:0 22px;border-radius:8px;background:var(--text-primary);color:#fff;font-weight:700;font-size:14px;line-height:20px;text-decoration:none;white-space:nowrap;}
+  .nav{position:sticky;top:0;z-index:30;background:var(--blue-100);box-shadow:0 1px 0 var(--card-border);}
+  .nav .inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:8px 11px;min-height:var(--nav-h);}
+  .signature{display:block;width:147px;height:43px;flex:none;}
+  .signature img{width:100%;height:100%;object-fit:contain;object-position:left center;}
+  .nav-list{display:flex;gap:4px;}
+  .nav-list a{display:block;padding:8px 10px;border-bottom:2px solid transparent;font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:none;white-space:nowrap;}
+  .nav-list a:hover{border-bottom-color:var(--blue-300);}
+  .nav-list a[aria-current="true"]{border-bottom-color:var(--blue-700);font-weight:700;color:var(--blue-800);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:48px;padding:0 24px;border-radius:8px;background:var(--text-primary);color:#fff;font-family:var(--serif);font-weight:700;font-size:14px;line-height:20px;text-decoration:none;white-space:nowrap;flex:none;}
   .btn:hover{background:var(--blue-800);}
+  .btn img{width:24px;height:24px;}
 
   /* ===== Hero ===== */
-  .hero{background:linear-gradient(180deg,var(--blue-300) 0%,var(--blue-200) 45.118%,var(--band) 100%);padding-block:32px;}
-  .hero-title{padding-block:24px;}
-  .hero h1{font-size:32px;line-height:normal;font-weight:700;color:var(--text-primary);}
-  .hero h1 span{display:block;}
-  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-  .chip{display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:156px;padding:0 12px;border-radius:var(--radius);background:var(--blue-100);font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);white-space:nowrap;}
-  .shots{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;}
-  .shot{position:relative;aspect-ratio:549/377;border-radius:var(--radius-img);overflow:hidden;background:#fff;}
-  .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;}
-  .shot.framed{border:8px solid var(--blue-400);}
+  .hero{background:var(--blue-100);padding-block:40px;display:flex;flex-direction:column;gap:32px;}
+  .hero-head{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding-inline:var(--gutter);}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:40px;line-height:1.5;color:var(--text-primary);}
+  .hero .result{padding:2px 24px;background:linear-gradient(90deg,#E7FFE5,#F5FFEB);font-family:var(--serif);font-weight:700;font-size:24px;line-height:1.5;color:var(--blue-700);}
+  .hero-media{position:relative;width:100%;max-width:1280px;margin:0 auto;padding-inline:var(--gutter);}
+  .hero-frame{position:relative;aspect-ratio:1120/669;border:4px solid var(--blue-400);border-radius:8px;overflow:hidden;background:#fff;}
+  .hero-frame img{position:absolute;left:0;top:-5.42%;width:100%;height:117.71%;max-width:none;}
+  .key-results{position:absolute;left:calc(var(--gutter) + 30px);bottom:17px;display:flex;gap:10px;}
+  .key-results li{display:flex;align-items:center;height:40px;padding:0 20px;border-radius:99999px;background:var(--blue-200);border:1px solid var(--blue-300);font-weight:700;font-size:16px;line-height:20px;color:var(--text-primary);white-space:nowrap;}
 
   /* ===== Details + timeline ===== */
-  .details-band{background:var(--band);padding-block:60px;}
-  .details{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
-  .label{font-weight:500;font-size:17.7px;line-height:27px;color:var(--text-tertiary);text-transform:uppercase;}
-  .value{font-weight:400;font-size:20px;line-height:35.4px;color:var(--text-primary);}
-  .timeline-wrap{padding-top:32px;}
-  .timeline{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin-top:24px;}
-  .timeline::before{content:'';position:absolute;left:9px;right:calc(20% - 9px);top:14px;height:1px;background:var(--line);}
-  .ms{position:relative;padding-top:45px;padding-bottom:20px;}
-  .ms::before{content:'';position:absolute;left:0;top:5.5px;width:18px;height:18px;border-radius:50%;background:var(--m);}
-  .ms .date{display:block;font-weight:500;font-size:17.7px;line-height:27px;color:var(--text-tertiary);text-transform:uppercase;}
-  .ms .phase{display:block;margin-top:5px;font-weight:400;font-size:20px;line-height:35.4px;color:var(--text-primary);}
-  .ms.launch::after{content:'';position:absolute;left:-5.5px;top:0;width:29px;height:29px;border-radius:50%;border:2px solid var(--blue-700);}
-  .ms.launch .date{font-weight:600;color:var(--blue-700);}
-  .ms.launch .phase{font-weight:600;}
+  .details{padding-block:60px;}
+  .details .inner{display:flex;flex-direction:column;gap:24px;}
+  .defs{display:flex;flex-wrap:wrap;gap:20px 24px;padding-top:24px;}
+  .defs dt{font-weight:600;font-size:12px;line-height:16px;letter-spacing:.72px;text-transform:uppercase;color:var(--blue-700);}
+  .defs dd{margin:0;padding-top:4px;font-weight:500;font-size:16px;line-height:24px;color:var(--text-primary);}
+  .timeline-label{margin-bottom:8px;font-weight:600;font-size:14px;line-height:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-700);}
+  .timeline{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding-top:0;}
+  .timeline::before{content:'';position:absolute;left:9px;right:calc(20% - 9px);top:9px;height:2px;background:var(--connector);}
+  .ms{position:relative;padding-top:34px;padding-right:12px;padding-bottom:12px;}
+  .ms::before{content:'';position:absolute;z-index:1;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--m);box-shadow:0 0 0 3px #fff;}
+  .ms .d{display:block;font-weight:600;font-size:13px;line-height:18px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-tertiary);}
+  .ms .p{display:block;margin-top:4px;font-size:16px;line-height:24px;color:var(--text-primary);}
+  .ms.launch::after{content:'';position:absolute;z-index:2;left:-5px;top:-5px;width:28px;height:28px;border-radius:50%;border:2px solid var(--blue-700);pointer-events:none;}
+  .ms.launch .d{font-weight:600;color:var(--blue-700);}
+  .ms.launch .p{font-weight:600;}
 
-  /* ===== Story sections (shared gradient) ===== */
-  .story{background:linear-gradient(180deg,var(--band) 0%,var(--blue-200) 85.445%,var(--blue-300) 100%);}
+  /* ===== Sections ===== */
   .sec{padding-block:60px;}
+  .sec.alt{background:var(--page-alt);}
   .sec .inner{display:flex;flex-direction:column;gap:24px;}
-  .sec-head{display:flex;gap:48px;align-items:flex-start;}
-  .sec-head h2{flex:0 0 241px;font-weight:700;font-size:36px;line-height:38px;color:var(--blue-800);}
-  .sec-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
-  .lead{font-weight:600;font-size:20px;line-height:30px;color:var(--text-primary);}
-  .sub{font-weight:400;font-size:16px;line-height:24px;color:var(--text-secondary);}
-  .full{border-radius:var(--radius-img);overflow:hidden;background:#fff;position:relative;}
-  .full img{width:100%;height:auto;}
-  .annot{position:absolute;background:rgba(105,255,85,.15);border:2px dashed #006f06;pointer-events:none;}
+  h2{font-family:var(--serif);font-weight:700;font-size:36px;line-height:43.2px;color:var(--blue-800);}
+  .para{font-size:18px;line-height:30px;color:var(--text-secondary);}
+  .para strong{font-weight:700;color:var(--text-primary);}
+  .quote{border-left:4px solid var(--blue-600);padding:4px 0 4px 20px;font-family:var(--serif);font-weight:600;font-size:22px;line-height:34px;color:var(--text-primary);}
+  .quote.narrow{max-width:680px;}
+  .figure{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;}
+  .figure .scroll{max-height:640px;overflow:auto;}
+  .figure img{width:100%;height:auto;}
+  .figure figcaption{padding:12px 16px;font-size:14px;line-height:20px;color:var(--text-secondary);background:var(--blue-100);}
   .points{display:flex;flex-direction:column;gap:16px;}
   .points li{display:flex;gap:16px;align-items:flex-start;}
-  .num{flex:0 0 36px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);background:var(--chip);font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);}
-  .num.alt{background:var(--blue-400);}
-  .points p{flex:1;min-width:0;font-weight:400;font-size:16px;line-height:24px;color:var(--text-secondary);padding-top:2px;}
-  .shots-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;}
-  .shots-2 .shot:first-child{aspect-ratio:549/377;}
-  .shots-2 .shot:last-child{aspect-ratio:549/433;}
-  .shots-2 .shot:last-child img{object-position:50% 2.6%;}
+  .num{flex:0 0 36px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:var(--chip);font-weight:600;font-size:14px;line-height:20px;color:var(--text-primary);}
+  .points p{flex:1;min-width:0;padding-top:2px;font-size:16px;line-height:24px;color:var(--text-secondary);}
+  .points strong{color:var(--text-primary);}
+
+  /* ===== Data cards (horizontal scroll) ===== */
+  .car-ctl{display:flex;justify-content:flex-end;gap:8px;margin-bottom:-8px;}
+  .car-btn{width:40px;height:40px;border-radius:8px;border:1px solid var(--card-border);background:#fff;font-size:18px;line-height:1;color:var(--blue-800);cursor:pointer;}
+  .car-btn:hover:not(:disabled){background:var(--blue-100);}
+  .car-btn:disabled{opacity:.4;cursor:default;}
+  .cards{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px;scrollbar-width:thin;}
+  .dcard{flex:0 0 min(486px,86vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--blue-100);border:1px solid var(--card-border);border-radius:8px;}
+  .stat{font-family:var(--serif);font-weight:700;font-size:56px;line-height:56px;color:var(--blue-800);}
+  .dcard .txt{font-size:16px;line-height:24px;color:var(--text-primary);}
+  .sowhat{padding:10px 12px;border-radius:4px;background:#fff;font-size:14px;line-height:20px;color:var(--text-secondary);}
+  .sowhat b{font-weight:700;color:var(--blue-800);}
+  .shot-box{flex:1 1 auto;min-height:220px;max-height:274px;overflow:auto;border:1px solid var(--border);border-radius:4px;background:#fff;}
+  .shot-box.fixed{flex:none;height:220px;}
+  .shot-box img{width:100%;height:auto;}
+  .src{font-size:14px;line-height:20px;color:var(--text-secondary);}
+
+  /* ===== Decisions ===== */
+  .decisions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .decision{display:flex;gap:16px;align-items:flex-start;padding:20px;background:var(--blue-100);border:1px solid var(--card-border);border-radius:8px;}
+  .decision p{padding-top:2px;font-size:16px;line-height:24px;color:var(--text-primary);}
+  .full-shot{position:relative;aspect-ratio:1120/2288;border:1px solid var(--blue-200);border-radius:8px;overflow:hidden;background:#fff;}
+  .full-shot img{position:absolute;left:0;top:-0.01%;width:100%;height:100.1%;max-width:none;}
+  .annot{position:absolute;background:rgba(105,255,85,.15);border:2px dashed #006f06;pointer-events:none;}
 
   /* ===== Impact ===== */
-  .impact-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;}
-  .card{background:rgba(255,255,255,.72);border:1px solid var(--nav-border);border-radius:var(--radius-img);padding:32px;}
-  .kpi-big{font-weight:700;font-size:64px;line-height:1;color:var(--blue-800);}
-  .kpi-label{margin-top:8px;font-weight:600;font-size:20px;line-height:30px;color:var(--text-primary);}
-  .kpi-rows{margin-top:24px;border-top:1px solid var(--nav-border);}
-  .kpi-row{display:flex;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--nav-border);}
-  .kpi-row.no-border{border-bottom:none;}
-  .kpi-row b{flex:0 0 104px;font-weight:700;font-size:28px;line-height:1.2;color:var(--blue-800);}
-  .kpi-row span{font-size:16px;line-height:24px;color:var(--text-secondary);}
-  .chart-title{font-weight:600;font-size:14px;line-height:20px;color:var(--text-tertiary);}
-  .chart{display:flex;align-items:flex-end;gap:24px;height:350px;margin-top:16px;}
-  .bar-col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;}
-  .bar-val{font-weight:700;font-size:16px;line-height:24px;color:var(--blue-800);}
-  .bar{width:72%;border-radius:var(--radius) var(--radius) 0 0;background:var(--blue-600);}
+  .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;}
+  .kpi{padding:20px;background:var(--blue-100);border:1px solid var(--card-border);border-radius:8px;}
+  .kpi b{display:block;font-family:var(--serif);font-weight:700;font-size:44px;line-height:48.4px;color:var(--blue-800);}
+  .kpi span{display:block;padding-top:8px;font-size:14px;line-height:20px;color:var(--text-secondary);}
+  .chart-card{padding:24px;background:#fff;border:1px solid var(--card-border);border-radius:8px;}
+  .chart-title{font-weight:600;font-size:14px;line-height:20px;color:var(--text-secondary);}
+  .panels{margin-top:20px;display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:40px;}
+  .panel h3{font-weight:600;font-size:14px;line-height:20px;color:var(--blue-800);}
+  .panel .scale-note{font-size:12px;line-height:16px;color:var(--text-tertiary);}
+  .plot{position:relative;height:260px;margin:20px 0 0 52px;}
+  .gl{position:absolute;left:0;right:0;border-top:1px solid var(--border-soft);}
+  .gl i{position:absolute;right:calc(100% + 10px);top:-8px;font-style:normal;font-size:12px;line-height:16px;color:var(--text-tertiary);}
+  .gl.base{border-top-color:var(--text-tertiary);}
+  .bars{position:absolute;inset:0;display:flex;justify-content:space-around;align-items:stretch;}
+  .col{width:30%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;}
+  .col .v{font-weight:700;font-size:16px;line-height:24px;color:var(--blue-800);}
+  .bar{width:100%;height:var(--h);background:var(--blue-600);border-radius:4px 4px 0 0;}
   .bar.proj{background:repeating-linear-gradient(135deg,var(--blue-300) 0 8px,var(--blue-100) 8px 16px);border:1.5px dashed var(--blue-600);border-bottom:0;}
-  .bar-x{font-weight:500;font-size:14px;line-height:20px;color:var(--text-primary);text-align:center;}
-  .bar-sub{font-size:12px;line-height:16px;color:var(--text-tertiary);text-align:center;}
-  .chart-note{margin-top:12px;font-size:14px;line-height:20px;color:var(--text-tertiary);}
+  .xl{margin:10px 0 0 52px;display:flex;justify-content:space-around;}
+  .xl div{width:30%;text-align:center;}
+  .xl b{display:block;font-weight:500;font-size:14px;line-height:20px;color:var(--text-primary);}
+  .xl span{display:block;font-size:12px;line-height:16px;color:var(--text-secondary);}
+  .legend{margin-top:20px;padding-top:16px;border-top:1px solid var(--border-soft);display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;line-height:20px;color:var(--text-secondary);}
+  .legend span{display:inline-flex;align-items:center;gap:8px;}
+  .sw{width:16px;height:16px;border-radius:2px;background:var(--blue-600);}
+  .sw.proj{background:repeating-linear-gradient(135deg,var(--blue-300) 0 4px,var(--blue-100) 4px 8px);border:1px dashed var(--blue-600);}
   .note{font-size:14px;line-height:20px;color:var(--text-secondary);max-width:760px;}
 
-  .tail{padding-bottom:20px;}
+  /* ===== Also shipped ===== */
+  .ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .ba-col{min-width:0;display:flex;flex-direction:column;gap:16px;}
+  .ba-frame{max-height:520px;overflow:auto;border:1px solid var(--border);border-radius:8px;background:#fff;}
+  .ba-inner{position:relative;}
+  .ba-inner img{width:100%;height:auto;}
+  .marker{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);}
+  .marker.before,.dot.before{background:var(--text-primary);}
+  .marker.after,.dot.after{background:var(--blue-600);}
+  .badge{align-self:flex-start;padding:4px 10px;border-radius:4px;font-weight:600;font-size:12px;line-height:16px;letter-spacing:.06em;text-transform:uppercase;}
+  .badge.before{background:#fff;color:var(--text-primary);border:1px solid var(--border);}
+  .badge.after{background:var(--blue-700);color:#fff;}
+  .callouts{display:flex;flex-direction:column;gap:12px;}
+  .callouts li{display:flex;gap:12px;align-items:flex-start;}
+  .dot{flex:0 0 24px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;}
+  .callouts p{font-size:16px;line-height:24px;color:var(--text-secondary);}
+
+  .footer{display:flex;justify-content:flex-end;padding-top:8px;font-size:14px;}
+  .footer a{color:var(--blue-700);font-weight:600;}
 
   /* ===== Responsive ===== */
-  @media (max-width:1000px){
-    .nav .inner{flex-wrap:wrap;padding-block:12px;}
-    .nav-links{order:3;width:100%;flex-wrap:wrap;gap:8px 20px;}
-    html{scroll-padding-top:130px;}
+  @media (max-width:1100px){
+    :root{--nav-h:104px;}
+    .nav .inner{flex-wrap:wrap;gap:4px 16px;padding-block:8px;}
+    .nav-list{order:3;width:100%;overflow-x:auto;scrollbar-width:none;}
+    .signature{width:120px;height:36px;}
+    .btn{height:40px;padding:0 16px;margin-left:auto;}
   }
   @media (max-width:860px){
-    .shots,.shots-2,.impact-grid{grid-template-columns:1fr;}
-    .sec-head{flex-direction:column;gap:12px;}
-    .sec-head h2{flex:none;}
-    .timeline{grid-template-columns:1fr;margin-top:16px;}
-    .timeline::before{left:8.5px;right:auto;top:14px;bottom:30px;width:1px;height:auto;}
-    .ms{padding:0 0 28px 40px;}
-    .ms::before{top:4px;}
-    .ms.launch::after{top:-1.5px;left:-5.5px;}
-    .ms .phase{margin-top:0;}
-    .hero h1{font-size:28px;}
-    .chart{height:320px;}
+    .decisions,.kpis,.ba-pair,.panels{grid-template-columns:1fr;}
+    .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+    .timeline{grid-template-columns:1fr;gap:0;padding-top:0;}
+    .timeline::before{display:none;}
+    .ms{padding:0 0 20px 36px;}
+    .ms:not(:last-child)::after{content:'';position:absolute;z-index:0;left:8px;top:18px;bottom:-2px;width:2px;background:var(--connector);}
+    .ms::before{top:0;}
+    .ms.launch::after{top:-5px;left:-5px;}
+    .ms .d{font-size:14px;line-height:20px;}
+    .ms .p{font-size:18px;line-height:28px;margin-top:0;}
+    .hero h1{font-size:32px;}
+    .hero .result{font-size:20px;}
+    h2{font-size:30px;line-height:36px;}
+    .full-shot{aspect-ratio:1120/2288;}
+  }
+  @media (max-width:700px){
+    .key-results{position:static;flex-wrap:wrap;margin-top:12px;}
+    .key-results li{height:36px;padding:0 14px;font-size:14px;}
+    .hero-frame{aspect-ratio:1120/760;}
   }
   @media (max-width:520px){
-    .sec,.details-band{padding-block:40px;}
-    .sec-head h2{font-size:30px;line-height:34px;}
-    .card{padding:20px;}
-    .kpi-big{font-size:52px;}
-    .chip{min-width:0;}
+    .sec{padding-block:40px;}
+    .details{padding-block:40px;}
+    .kpis{grid-template-columns:1fr;}
+    .kpi b{font-size:36px;line-height:40px;}
+    .dcard{padding:20px;}
+    .stat{font-size:48px;line-height:48px;}
+    .plot{margin-left:44px;height:220px;}
+    .xl{margin-left:44px;}
   }
 </style>
 </head>
 <body>
 
 <!--
-  IMAGES: each  loads from images/ first. If the file is missing it falls back to
-  the temporary Figma link in data-fallback (valid for ~7 days only). Export the frames
-  listed in images/README.txt to images/ to make them permanent.
+  IMAGES
+  Every Figma image loads from images/ first. If a file is missing it falls back to the temporary
+  Figma link in data-fallback (valid about 7 days). Export the files listed in images/README.txt
+  to make them permanent. Chart and English-page images fall back to the original deployed site.
 -->
 
 <header class="nav">
   <div class="inner">
-    <a class="nav-title" href="#top">Service LP Optimisation</a>
+    <a class="signature" href="https://feyadoshi.framer.website" target="_blank" rel="noopener noreferrer" aria-label="Visit Feya Doshi's website (opens in a new tab)">
+      <img src="images/signature.svg" data-fallback="https://www.figma.com/api/mcp/asset/11a2301f-9067-4264-a8d2-32ac96bd1c68.svg" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Feya Doshi">
+    </a>
     <nav aria-label="Case study sections">
-      <ul class="nav-links">
-        <li><a href="#diagnosis">Diagnosis</a></li>
-        <li><a href="#design-decisions">Design Decisions</a></li>
+      <ul class="nav-list">
+        <li><a href="#data">What the data said</a></li>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#decisions">Design decisions</a></li>
         <li><a href="#impact">Impact</a></li>
         <li><a href="#also-shipped">Also shipped</a></li>
-        <li><a href="#next">Next</a></li>
+        <li><a href="#next">What's next</a></li>
       </ul>
     </nav>
-    <a class="btn" href="https://www.figma.com/design/ck9DC9QSCnVsZqc7qsY8zC/English-Language-Editing-Page?node-id=0-1&amp;t=Zlw4gX4m2lH0WwHv-1" target="_blank" rel="noopener">Open Design File</a>
+    <a class="btn" href="https://www.figma.com/design/ck9DC9QSCnVsZqc7qsY8zC/English-Language-Editing-Page?node-id=0-1&amp;t=Zlw4gX4m2lH0WwHv-1" target="_blank" rel="noopener">
+      <img src="images/figma.svg" data-fallback="https://www.figma.com/api/mcp/asset/46073644-e953-4c94-b17c-bfa8e6b2db67.svg" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="" width="24" height="24">
+      Open Design File
+    </a>
   </div>
 </header>
 
-<main id="top">
+<main>
 
-  <!-- Hero -->
-  <section class="hero" aria-labelledby="title">
-    <div class="inner hero-title">
-      <h1 id="title"><span>Optimising SL2.</span><span>$22.3K incremental revenue in Q2.</span></h1>
-      <ul class="chips" aria-label="Key results">
-        <li class="chip">26 extra jobs in Q2</li>
-        <li class="chip">$858 average order</li>
-        <li class="chip">12 jobs in first 2 weeks</li>
-      </ul>
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="intro" aria-labelledby="title">
+    <div class="hero-head">
+      <h1 id="title">Optimising SL2.</h1>
+      <p class="result">$22.3K incremental revenue in Q2.</p>
     </div>
-    <div class="inner shots">
-      <div class="shot framed">
-        <img src="images/sl2-after-top.png" data-fallback="https://www.figma.com/api/mcp/asset/98400ccb-1d6f-4d3e-93fe-69f830db62f9.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The new SL2 screen: four service cards with prices and a short key-features list">
+    <div class="hero-media">
+      <div class="hero-frame">
+        <img src="images/sl2-hero.png" data-fallback="https://www.figma.com/api/mcp/asset/d4a114b0-3519-4d60-8c45-4185b9bc4ff4.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The new SL2 screen: four service cards (Quick Language Fix, In-depth Language Support and Editing, Top Journal Editing and Post-AI Editing) with prices and key features">
       </div>
+      <ul class="key-results" aria-label="Key results">
+        <li>26 extra jobs in Q2</li>
+        <li>$858 average order</li>
+        <li>12 jobs in first 2 weeks</li>
+      </ul>
     </div>
   </section>
 
-  <!-- Details + timeline -->
-  <section class="details-band" aria-label="Project details">
+  <!-- ===== Details + timeline ===== -->
+  <section class="details" aria-label="Project details">
     <div class="inner">
-      <div class="details">
-        <div><p class="label">Role</p><p class="value">Product Designer · POC</p></div>
-        <div><p class="label">Worked with</p><p class="value">PMs · Marketing · Devs · Stakeholders</p></div>
-        <div><p class="label">Tools</p><p class="value">Figma, Microsoft Clarity, Hotjar</p></div>
-        <div><p class="label">Period</p><p class="value">Q2</p></div>
-      </div>
-      <div class="timeline-wrap">
-        <p class="label">Timeline</p>
-        <ol class="timeline" style="list-style:none;padding:0;">
-          <li class="ms" style="--m:var(--blue-400)"><span class="date">Aug 11</span><span class="phase">Research</span></li>
-          <li class="ms" style="--m:var(--blue-500)"><span class="date">Aug 12</span><span class="phase">First draft</span></li>
-          <li class="ms" style="--m:var(--blue-600)"><span class="date">Aug 18</span><span class="phase">Final draft</span></li>
-          <li class="ms" style="--m:var(--blue-700)"><span class="date">Aug 21</span><span class="phase">Development</span></li>
-          <li class="ms launch" style="--m:var(--blue-800)"><span class="date">Sep 10</span><span class="phase">Launch</span></li>
+      <dl class="defs">
+        <div><dt>Type</dt><dd>Work project · Q2</dd></div>
+        <div><dt>Worked with</dt><dd>PMs · Marketing · Devs · Stakeholders</dd></div>
+        <div><dt>Platform</dt><dd>Web, desktop first</dd></div>
+        <div><dt>Tools</dt><dd>Figma, Microsoft Clarity</dd></div>
+        <div><dt>Role</dt><dd>Product Designer · POC</dd></div>
+      </dl>
+      <div>
+        <p class="timeline-label">Timeline</p>
+        <ol class="timeline">
+          <li class="ms" style="--m:var(--blue-400)"><span class="d">Aug 11</span><span class="p">Research</span></li>
+          <li class="ms" style="--m:#4C88E6"><span class="d">Aug 12</span><span class="p">First draft</span></li>
+          <li class="ms" style="--m:var(--blue-600)"><span class="d">Aug 18</span><span class="p">Final draft</span></li>
+          <li class="ms" style="--m:var(--blue-700)"><span class="d">Aug 21</span><span class="p">Development</span></li>
+          <li class="ms launch" style="--m:var(--blue-800)"><span class="d">Sep 10</span><span class="p">Launch</span></li>
         </ol>
       </div>
     </div>
   </section>
 
-  <div class="story">
-
-    <!-- Diagnosis -->
-    <section class="sec" id="diagnosis" aria-labelledby="h-diagnosis">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-diagnosis">Diagnosis</h2>
-          <div class="sec-body">
-            <p class="lead">Service Level 2 is where authors pick a service. If it is unclear, they leave.</p>
-            <p class="sub">We are introducing Post-AI Editing as a new addition to our existing service portfolio.</p>
-          </div>
-        </div>
-        <div class="full">
-          <img src="images/sl2-before.png" data-fallback="https://www.figma.com/api/mcp/asset/aa6e3e2f-1dd6-46c2-8a0a-b72b7fe808ae.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The old SL2 screen in full: a long, text-heavy table comparing Standard, Advanced and Premium editing" loading="lazy">
-        </div>
-        
-        <ul class="points">
-          <li><span class="num">01</span><p>Services are hard to scan and compare.</p></li>
-          <li><span class="num">02</span><p>A 4th service, Post-AI Editing, isn't directly comparable to the others - it doesn't fit the same format.</p></li>
-          <li><span class="num">03</span><p>The tabular format is very text heavy.</p></li>
-        </ul>
+  <!-- ===== Data ===== -->
+  <section class="sec" id="data" aria-labelledby="h-data">
+    <div class="inner">
+      <h2 id="h-data">What did the data say?</h2>
+      <div>
+        <p class="para">Service Level 2 (SL2) is where authors pick a service. <strong>If it is unclear, they leave.</strong> We were also introducing Post-AI Editing as a new addition to our existing service portfolio.</p>
+        <p class="para" style="padding-top:16px;">Before designing anything, I looked at 30 days of visitor data from Microsoft Clarity. Five things stood out.</p>
       </div>
-    </section>
 
-    <!-- Design decisions -->
-    <section class="sec" id="design-decisions" aria-labelledby="h-decisions">
-      <div class="inner">
-          <h3 style="margin:24px 0 8px;">How did the design change?</h3>
-        <h2 id="h-decisions">Design Decisions</h2>
-          <div class="sec-body">
-            <p class="lead">Goal: Let users get what they want without confusing them.</p>
-          </div>
-        </div>
-        <div class="full">
-          <img src="images/sl2-after-full.png" data-fallback="https://www.figma.com/api/mcp/asset/9d9a6571-7d92-4f24-92c0-5c3bcce2fe0d.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The new SL2 screen in full. The price row is outlined in green." loading="lazy">
-          <span class="annot" style="left:2.679%;top:41.56%;width:94.64%;height:24.48%;" aria-hidden="true"></span>
-          <span class="annot" style="left:2.679%;top:11.845%;width:94.64%;height:2.448%;" aria-hidden="true"></span>
-        </div>
-        <ul class="points">
-          <li><span class="num">01</span><p>Show only necessary information in front (Progressive Disclosure)</p></li>
-          <li><span class="num">02</span><p>Surface prices upfront, reducing one click and possible dropoffs due to frustration.</p></li>
-          <li><span class="num">03</span><p>Refine copy to make it easy to understand for users.</p></li>
-          <li><span class="num">04</span><p>Web Content Accessibility Guidelines (WCAG) followed</p></li>
-        </ul>
+      <div class="car-ctl">
+        <button class="car-btn" type="button" data-dir="-1" aria-label="Previous finding">←</button>
+        <button class="car-btn" type="button" data-dir="1" aria-label="Next finding">→</button>
       </div>
-    </section>
+      <div class="cards" id="cards" role="region" aria-label="Five findings from the data. Scroll sideways to see all." tabindex="0">
 
-    <!-- Impact -->
-    <section class="sec" id="impact" aria-labelledby="h-impact">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-impact">Impact</h2>
-          <div class="sec-body">
-            <p class="lead">Better information presentation on services offered: $22.3K incremental revenue in Q2.</p>
-          </div>
+        <div class="dcard">
+          <p class="stat">0%</p>
+          <p class="txt">Not one of the 101 people who got stuck on the table was just browsing. Most (65) were highly interested buyers.</p>
+          <p class="sowhat"><b>So what:</b> losing those buyers is a direct loss.</p>
+          <div class="shot-box fixed"><img src="images/diag-intent.png" data-fallback="https://optimising-service-lp.vercel.app/Diagnosis%20-%20User%20Intent%20%28Dead%20Clicks%29.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Microsoft Clarity user intent chart for sessions with dead clicks: 64% high intent, 36% medium intent, 0% low intent" loading="lazy"></div>
+          <p class="src">User intent, dead-click sessions only (101 sessions)</p>
         </div>
-        <div class="impact-grid">
-          <div class="card">
-            <p class="kpi-big">$22.3K</p>
-            <p class="kpi-label">incremental revenue in Q2</p>
-            <div class="kpi-rows">
-              <div class="kpi-row"><b>26</b><span>incremental jobs in Q2</span></div>
-              <div class="kpi-row"><b>$858</b><span>average order value</span></div>
-              <div class="kpi-row no-border"><b>12</b><span>incremental jobs in the first 2 weeks after launch ($10,294)</span></div>
+
+        <div class="dcard">
+          <p class="stat">92%</p>
+          <p class="txt">9 out of 10 visits happen on a desktop, not a phone. So the redesign is built for desktop first.</p>
+          <div class="shot-box"><img src="images/diag-devices.png" data-fallback="https://optimising-service-lp.vercel.app/Diagnosis%20-%20Devices.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Microsoft Clarity device breakdown: 92.35% PC, 6.96% mobile, 0.70% other" loading="lazy"></div>
+          <p class="src">Devices, all sessions</p>
+        </div>
+
+        <div class="dcard">
+          <p class="stat">66%</p>
+          <p class="txt">Most visitors stop scrolling halfway down the page. They never even see the plans.</p>
+          <p class="sowhat"><b>So what:</b> use the top fold efficiently.</p>
+          <div class="shot-box fixed"><img src="images/diag-scroll.png" data-fallback="https://optimising-service-lp.vercel.app/Diagnosis%20-%20Scroll%20Depth.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Microsoft Clarity scroll depth chart showing the share of sessions remaining at each depth of the page" loading="lazy"></div>
+          <p class="src">Scroll depth, all sessions</p>
+        </div>
+
+        <div class="dcard">
+          <p class="stat">36%</p>
+          <p class="txt">More than a third of people's attention stays near the very top of the page.</p>
+          <div class="shot-box"><img src="images/diag-attention.png" data-fallback="https://optimising-service-lp.vercel.app/Diagnosis%20-%20Attention.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Microsoft Clarity attention heatmap of the top of the live desktop page" loading="lazy"></div>
+          <p class="src">Attention heatmap, all sessions</p>
+        </div>
+
+        <div class="dcard">
+          <p class="stat">91%</p>
+          <p class="txt">9 in 10 of the top traffic sources are Wiley's own pages, not a search engine.</p>
+          <p class="sowhat"><b>So what:</b> users already know what they want before they land here. Don't spend much time convincing them. Start selling.</p>
+          <div class="shot-box fixed"><img src="images/diag-referrers.png" data-fallback="https://optimising-service-lp.vercel.app/Diagnosis%20-%20Referrers.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Microsoft Clarity top referrers: onlinelibrary.wiley.com, wileyeditingservices.com, en.wileyeditingservices.com, authors.wiley.com, google.com" loading="lazy"></div>
+          <p class="src">Top referrers, all sessions</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Problem ===== -->
+  <section class="sec alt" id="problem" aria-labelledby="h-problem">
+    <div class="inner">
+      <h2 id="h-problem">So what was going wrong?</h2>
+      <p class="para">The old SL2 listed Standard, Advanced and Premium editing in one long table. It worked for three services. It would not work for a fourth.</p>
+      <blockquote class="quote">A 4th service, Post-AI Editing, isn't directly comparable to the others. It doesn't fit the same format.</blockquote>
+      <figure class="figure">
+        <div class="scroll">
+          <img src="images/sl2-before.png" data-fallback="https://www.figma.com/api/mcp/asset/7de8991c-e110-4ee7-aa4e-bd282fbccff5.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The old SL2 screen in full: a long, text-heavy table comparing Standard, Advanced and Premium editing" loading="lazy">
+        </div>
+        <figcaption>The old SL2 screen, scrollable.</figcaption>
+      </figure>
+      <ul class="points">
+        <li><span class="num">01</span><p>Services are hard to scan and compare.</p></li>
+        <li><span class="num">02</span><p>A 4th service, Post-AI Editing, isn't directly comparable to the others - it doesn't fit the same format.</p></li>
+        <li><span class="num">03</span><p>The tabular format is very text heavy.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Decisions ===== -->
+  <section class="sec" id="decisions" aria-labelledby="h-decisions">
+    <div class="inner">
+      <h2 id="h-decisions">Design Decisions I made..</h2>
+      <blockquote class="quote narrow">Goal: let users get what they want without confusing them.</blockquote>
+      <div class="decisions">
+        <div class="decision"><span class="num">01</span><p>Show only necessary information in front (Progressive Disclosure)</p></div>
+        <div class="decision"><span class="num">02</span><p>Surface prices upfront, reducing one click and possible dropoffs due to frustration.</p></div>
+        <div class="decision"><span class="num">03</span><p>Refine copy to make it easy to understand for users.</p></div>
+        <div class="decision"><span class="num">04</span><p>Web Content Accessibility Guidelines (WCAG) followed</p></div>
+      </div>
+      <div class="full-shot">
+        <img src="images/sl2-after-full.png" data-fallback="https://www.figma.com/api/mcp/asset/d479009c-4823-4e20-b345-f3f88bcb901c.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="The new SL2 screen in full. The price row and the compare section are outlined in green." loading="lazy">
+        <span class="annot" style="left:2.594%;top:41.56%;width:94.81%;height:24.5%;" aria-hidden="true"></span>
+        <span class="annot" style="left:2.594%;top:11.81%;width:94.81%;height:2.45%;" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Impact ===== -->
+  <section class="sec alt" id="impact" aria-labelledby="h-impact">
+    <div class="inner">
+      <h2 id="h-impact">It Worked</h2>
+      <p class="para">Better information presentation on services offered came with $22.3K of incremental revenue in Q2.</p>
+
+      <div class="kpis">
+        <div class="kpi"><b>$22.3K</b><span>incremental revenue in Q2</span></div>
+        <div class="kpi"><b>26</b><span>incremental jobs in Q2</span></div>
+        <div class="kpi"><b>$858</b><span>average order value</span></div>
+        <div class="kpi"><b>12</b><span>incremental jobs in the first 2 weeks ($10,294)</span></div>
+      </div>
+
+      <div class="chart-card">
+        <p class="chart-title">Revenue: actual vs projected ($K)</p>
+        <div class="panels">
+
+          <div class="panel" role="img" aria-label="Column chart of actual revenue. First 2 weeks: $10.3K from 12 jobs. Q2: $22.3K from 26 jobs.">
+            <h3>Actual so far</h3>
+            <div class="plot" aria-hidden="true">
+              <span class="gl" style="bottom:100%"><i>$25K</i></span>
+              <span class="gl" style="bottom:80%"><i>$20K</i></span>
+              <span class="gl" style="bottom:60%"><i>$15K</i></span>
+              <span class="gl" style="bottom:40%"><i>$10K</i></span>
+              <span class="gl" style="bottom:20%"><i>$5K</i></span>
+              <span class="gl base" style="bottom:0"><i>$0</i></span>
+              <div class="bars">
+                <div class="col"><span class="v">$10.3K</span><div class="bar" style="--h:41.2%"></div></div>
+                <div class="col"><span class="v">$22.3K</span><div class="bar" style="--h:89.2%"></div></div>
+              </div>
+            </div>
+            <div class="xl" aria-hidden="true">
+              <div><b>First 2 weeks</b><span>12 jobs</span></div>
+              <div><b>Q2</b><span>26 jobs</span></div>
             </div>
           </div>
-          <div class="card">
-            <p class="chart-title">Revenue: actual vs projected ($K)</p>
-            <div class="chart" role="img" aria-label="Bar chart. First 2 weeks: $10.3K from 12 jobs. Q2: $22.3K from 26 jobs. FY27 projection: $134K from 156 jobs.">
-              <div class="bar-col"><span class="bar-val">$10.3K</span><div class="bar" style="height:18px"></div><span class="bar-x">First 2 weeks</span><span class="bar-sub">12 jobs</span></div>
-              <div class="bar-col"><span class="bar-val">$22.3K</span><div class="bar" style="height:40px"></div><span class="bar-x">Q2</span><span class="bar-sub">26 jobs</span></div>
-              <div class="bar-col"><span class="bar-val">$134.0K</span><div class="bar proj" style="height:240px"></div><span class="bar-x">FY27 projection</span><span class="bar-sub">156 jobs</span></div>
+
+          <div class="panel" role="img" aria-label="Column chart of the FY27 projection: $134K from 156 jobs. Different scale from the actual revenue chart.">
+            <h3>Projection, rest of FY27</h3>
+            <div class="plot" aria-hidden="true">
+              <span class="gl" style="bottom:100%"><i>$150K</i></span>
+              <span class="gl" style="bottom:66.667%"><i>$100K</i></span>
+              <span class="gl" style="bottom:33.333%"><i>$50K</i></span>
+              <span class="gl base" style="bottom:0"><i>$0</i></span>
+              <div class="bars">
+                <div class="col" style="width:50%"><span class="v">$134.0K</span><div class="bar proj" style="--h:89.33%"></div></div>
+              </div>
+            </div>
+            <div class="xl" aria-hidden="true">
+              <div style="width:50%"><b>FY27 projection</b><span>156 jobs</span></div>
             </div>
           </div>
-        </div>
-        <ul class="points">
-          <li><span class="num">01</span><p>First 2 weeks after launch: 12 incremental jobs, $10,294.</p></li>
-          <li><span class="num">02</span><p>Q2: 26 incremental jobs at an average order value of $858.</p></li>
-          <li><span class="num">03</span><p>Projection for the rest of FY27: 156 jobs, about $134,000. Adding testimonials is the next step toward it.</p></li>
-        </ul>
-      </div>
-    </section>
-    <section class="sec" id="also-shipped" aria-labelledby="h-also">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-also">Also Shipped</h2>
-          <div class="sec-body">
-            <p class="lead">The English Language Editing page had the same problems: unclear information and weak design. I fixed it in the same period.</p>
-          </div>
-        </div>
-        <div class="shots-2">
-          <div class="shot">
-            <img src="images/sl2-before.png" data-fallback="https://www.figma.com/api/mcp/asset/aa6e3e2f-1dd6-46c2-8a0a-b72b7fe808ae.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="Before: the old page with a text-heavy comparison table" loading="lazy">
-          </div>
-          <div class="shot framed">
-            <img src="images/ele-after.png" data-fallback="https://www.figma.com/api/mcp/asset/7994fffc-7d61-4cde-9eb1-56e26f984eec.png" onerror="this.onerror=null;this.src=this.dataset.fallback" alt="After: the English Language Editing page with a hero banner and four service cards" loading="lazy">
-          </div>
-        </div>
-        <ul class="points">
-          <li><span class="num alt">01</span><p>High-impact hero banner optimising the top fold</p></li>
-          <li><span class="num alt">02</span><p>4 cards, scannable in seconds</p></li>
-        </ul>
-      </div>
-    </section>
 
-    <!-- What's next -->
-    <section class="sec tail" id="next" aria-labelledby="h-next">
-      <div class="inner">
-        <div class="sec-head">
-          <h2 id="h-next">What’s Next</h2>
-          <div class="sec-body">
-            <p class="lead">Add testimonials to SL2. Trust matters most to authors from China. The FY27 target depends on it.</p>
-          </div>
+        </div>
+        <div class="legend">
+          <span><i class="sw"></i>Actual</span>
+          <span><i class="sw proj"></i>Projection, not a result</span>
         </div>
       </div>
-    </section>
 
-  </div>
+    </div>
+  </section>
+
+  <!-- ===== Also shipped ===== -->
+  <section class="sec" id="also-shipped" aria-labelledby="h-also">
+    <div class="inner">
+      <h2 id="h-also">Also shipped: the English Language Editing page</h2>
+      <p class="para">This page had the same problems: unclear information and weak design. I fixed it in the same period.</p>
+      <div class="ba-pair">
+        <div class="ba-col">
+          <div class="ba-frame">
+            <div class="ba-inner">
+              <img src="https://optimising-service-lp.vercel.app/Live%20version%20%283%29.png" alt="Full-page screenshot of the English Language Editing page before the redesign" loading="lazy">
+              <span class="marker before" style="top:6.5%;left:24%;">1</span>
+              <span class="marker before" style="top:15.5%;left:50%;">2</span>
+              <span class="marker before" style="top:18%;left:50%;">3</span>
+            </div>
+          </div>
+          <span class="badge before">Before</span>
+          <ul class="callouts">
+            <li><span class="dot before">1</span><p>Hero banner consuming 30% of top fold</p></li>
+            <li><span class="dot before">2</span><p>Dense text - hard to scan, no room for a 4th plan</p></li>
+            <li><span class="dot before">3</span><p>Pricing not shown upfront</p></li>
+          </ul>
+        </div>
+        <div class="ba-col">
+          <div class="ba-frame">
+            <div class="ba-inner">
+              <img src="https://optimising-service-lp.vercel.app/Desktop%20%286%29.png" alt="Full-page screenshot of the redesigned English Language Editing page with 4 plan cards" loading="lazy">
+              <span class="marker after" style="top:6%;left:76%;">1</span>
+              <span class="marker after" style="top:16%;left:50%;">2</span>
+              <span class="marker after" style="top:22%;left:14%;">3</span>
+            </div>
+          </div>
+          <span class="badge after">After</span>
+          <ul class="callouts">
+            <li><span class="dot after">1</span><p>High-impact hero banner optimising the top fold</p></li>
+            <li><span class="dot after">2</span><p>4 cards, scannable in seconds</p></li>
+            <li><span class="dot after">3</span><p>Pricing for each service shown upfront, reducing one click</p></li>
+            <li><span class="dot after">4</span><p>Web Content Accessibility Guidelines (WCAG) followed</p></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== In conclusion ===== -->
+  <section class="sec alt" id="next" aria-labelledby="h-next">
+    <div class="inner">
+      <h2 id="h-next">In conclusion: what's next</h2>
+      <p class="para">SL2 is live, and four very different services now sit side by side without turning the page into a wall of text.</p>
+      <ul class="points">
+        <li><span class="num">01</span><p><strong>Add testimonials to SL2.</strong> Trust matters most to authors from China. The FY27 target depends on it.</p></li>
+        <li><span class="num">02</span><p>Keep tracking the English page: pricing-nav clicks, drop-off, and "which plan do I need" support tickets.</p></li>
+      </ul>
+    </div>
+  </section>
+
 </main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Nav: highlight the section in view
+  var links=[].slice.call(document.querySelectorAll('.nav-list a'));
+  var map={}; links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){l.removeAttribute('aria-current');});
+          if(map[e.target.id]) map[e.target.id].setAttribute('aria-current','true');
+        }
+      });
+    },{rootMargin:'-30% 0px -60% 0px'});
+    document.querySelectorAll('main section[id]').forEach(function(s){io.observe(s);});
+  }
+
+  // Data cards: previous / next buttons
+  var track=document.getElementById('cards');
+  var btns=[].slice.call(document.querySelectorAll('.car-btn'));
+  function update(){
+    var max=track.scrollWidth-track.clientWidth-2;
+    btns[0].disabled=track.scrollLeft<=2;
+    btns[1].disabled=track.scrollLeft>=max;
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var card=track.querySelector('.dcard');
+      var step=(card?card.getBoundingClientRect().width:400)+20;
+      track.scrollBy({left:step*Number(b.dataset.dir),behavior:reduce?'auto':'smooth'});
+    });
+  });
+  track.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  update();
+})();
+</script>
 
 </body>
 </html>
